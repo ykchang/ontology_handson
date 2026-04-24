@@ -1,0 +1,191 @@
+@prefix : <http://k.fc/onto#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:aboutPlace rdfs:label "about place" .
+
+:areaCode rdfs:label "area code" .
+
+:asOf rdfs:label "as of time" .
+
+:congestionMessage rdfs:label "congestion message" .
+
+:femaleRate rdfs:label "female rate" .
+
+:forPlace rdfs:label "for place" .
+
+:forecastCongestionLevel rdfs:label "forecast congestion level" .
+
+:forecastPopulationMax rdfs:label "forecast population max" .
+
+:forecastPopulationMin rdfs:label "forecast population min" .
+
+:forecastTime rdfs:label "forecast time" .
+
+:forecast_POI014_20250926T160000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 16:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "붐빔" ;
+    :forecastPopulationMax 96000 ;
+    :forecastPopulationMin 94000 ;
+    :forecastTime "2025-09-26T16:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T160000" .
+
+:forecast_POI014_20250926T170000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 17:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "붐빔" ;
+    :forecastPopulationMax 94000 ;
+    :forecastPopulationMin 92000 ;
+    :forecastTime "2025-09-26T17:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T170000" .
+
+:forecast_POI014_20250926T180000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 18:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "붐빔" ;
+    :forecastPopulationMax 92000 ;
+    :forecastPopulationMin 90000 ;
+    :forecastTime "2025-09-26T18:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T180000" .
+
+:forecast_POI014_20250926T190000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 19:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "붐빔" ;
+    :forecastPopulationMax 90000 ;
+    :forecastPopulationMin 88000 ;
+    :forecastTime "2025-09-26T19:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T190000" .
+
+:forecast_POI014_20250926T200000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 20:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "붐빔" ;
+    :forecastPopulationMax 86000 ;
+    :forecastPopulationMin 84000 ;
+    :forecastTime "2025-09-26T20:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T200000" .
+
+:forecast_POI014_20250926T210000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 21:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "약간 붐빔" ;
+    :forecastPopulationMax 78000 ;
+    :forecastPopulationMin 76000 ;
+    :forecastTime "2025-09-26T21:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T210000" .
+
+:forecast_POI014_20250926T220000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 22:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "약간 붐빔" ;
+    :forecastPopulationMax 70000 ;
+    :forecastPopulationMin 68000 ;
+    :forecastTime "2025-09-26T22:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T220000" .
+
+:forecast_POI014_20250926T230000 a :Forecast ;
+    rdfs:label "강남역 2025-09-26 23:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "보통" ;
+    :forecastPopulationMax 58000 ;
+    :forecastPopulationMin 56000 ;
+    :forecastTime "2025-09-26T23:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250926T230000" .
+
+:forecast_POI014_20250927T000000 a :Forecast ;
+    rdfs:label "강남역 2025-09-27 00:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "여유" ;
+    :forecastPopulationMax 46000 ;
+    :forecastPopulationMin 44000 ;
+    :forecastTime "2025-09-27T00:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250927T000000" .
+
+:forecast_POI014_20250927T010000 a :Forecast ;
+    rdfs:label "강남역 2025-09-27 01:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "여유" ;
+    :forecastPopulationMax 36000 ;
+    :forecastPopulationMin 34000 ;
+    :forecastTime "2025-09-27T01:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250927T010000" .
+
+:forecast_POI014_20250927T020000 a :Forecast ;
+    rdfs:label "강남역 2025-09-27 02:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "여유" ;
+    :forecastPopulationMax 30000 ;
+    :forecastPopulationMin 28000 ;
+    :forecastTime "2025-09-27T02:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250927T020000" .
+
+:forecast_POI014_20250927T030000 a :Forecast ;
+    rdfs:label "강남역 2025-09-27 03:00 예측"@ko ;
+    :forPlace :place_POI014 ;
+    :forecastCongestionLevel "여유" ;
+    :forecastPopulationMax 26000 ;
+    :forecastPopulationMin 24000 ;
+    :forecastTime "2025-09-27T03:00:00"^^xsd:dateTime ;
+    :iri "http://k.fc/onto#forecast_POI014_20250927T030000" .
+
+:hasCongestionLevel rdfs:label "congestion level" .
+
+:hasForecast rdfs:label "has forecast flag" .
+
+:iri rdfs:label "string form of IRI" .
+
+:maleRate rdfs:label "male rate" .
+
+:nonResidentRate rdfs:label "non-resident rate" .
+
+:populationMax rdfs:label "population max" .
+
+:populationMin rdfs:label "population min" .
+
+:replace rdfs:label "replace flag" .
+
+:residentRate rdfs:label "resident rate" .
+
+:response_POI014_20250926T151500 a :Response ;
+    :aboutPlace :place_POI014 ;
+    :iri "http://k.fc/onto#response_POI014_20250926T151500" ;
+    :resultCode "INFO-000" ;
+    :resultMessage "정상 처리되었습니다." .
+
+:resultCode rdfs:label "result code" .
+
+:resultMessage rdfs:label "result message" .
+
+:Place rdfs:label "Place" .
+
+:Response rdfs:label "Response" .
+
+:Forecast rdfs:label "Forecast" .
+
+:place_POI014 a :Place ;
+    rdfs:label "강남역"@ko ;
+    :ageRate_0 0.7 ;
+    :ageRate_10 4.6 ;
+    :ageRate_20 25.9 ;
+    :ageRate_30 26.3 ;
+    :ageRate_40 19.7 ;
+    :ageRate_50 13.0 ;
+    :ageRate_60 6.2 ;
+    :ageRate_70 3.7 ;
+    :areaCode "POI014" ;
+    :asOf "2025-09-26T15:15:00"^^xsd:dateTime ;
+    :attr_area_nm "강남역" ;
+    :congestionMessage "사람들이 몰려있을 가능성이 매우 크고 많이 붐빈다고 느낄 수 있어요. 인구밀도가 높은 구간에서는 도보 이동시 부딪힘이 발생할 수 있어요." ;
+    :femaleRate 51.3 ;
+    :hasCongestionLevel "붐빔" ;
+    :hasForecast true ;
+    :iri "http://k.fc/onto#place_POI014" ;
+    :maleRate 48.7 ;
+    :nonResidentRate 52.1 ;
+    :populationMax 96000 ;
+    :populationMin 94000 ;
+    :replace false ;
+    :residentRate 47.9 .
+

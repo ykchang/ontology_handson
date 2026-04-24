@@ -1,0 +1,22 @@
+@prefix :     <http://k.fc/onto/> .
+@prefix cctv: <http://k.fc/onto/cctv#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+:Obs_Congestion_7840d4 a sosa:Observation ;
+    sosa:observedProperty :Congestion ;
+    sosa:hasResult :VeryCrowded ;
+    sosa:madeBySensor <http://k.fc/onto/cctv#L010009> ;
+    sosa:resultTime "2025-10-17T14:30:00Z"^^xsd:dateTime .
+
+:Obs_Traffic_1db133 a sosa:Observation ;
+    sosa:observedProperty :TrafficVolume ;
+    sosa:hasResult :Heavy ;
+    sosa:madeBySensor <http://k.fc/onto/cctv#L010009> ;
+    sosa:resultTime "2025-10-17T14:30:00Z"^^xsd:dateTime .
+
+:Obs_Weather_682d29 a sosa:Observation ;
+    sosa:observedProperty :WeatherCondition ;
+    sosa:hasResult :Clear ;
+    sosa:madeBySensor <http://k.fc/onto/cctv#L010009> ;
+    sosa:resultTime "2025-10-17T14:30:00Z"^^xsd:dateTime .

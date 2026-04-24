@@ -1,0 +1,88 @@
+PREFIX :    <http://k.fc/onto#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?t ?level ?min ?max
+       ?ratioPerCapita ?minStaff
+       ?hour
+       ?securityMul
+       ?female ?age20 ?age30
+       ?staffBase ?staffAfterMul ?staffFinal
+       ?secStaff ?guideStaff ?cashierStaff
+WHERE {
+  # 1) 예측 (강남역)
+  GRAPH <http://k.fc/onto> {
+    ?f a :Forecast ;
+       :forPlace :place_POI014 ;
+       :forecastTime ?t ;
+       :forecastCongestionLevel ?level ;
+       :forecastPopulationMin ?min ;
+       :forecastPopulationMax ?max .
+  }
+
+  # 2) 혼잡도 → 정책 매핑
+  GRAPH <http://k.fc/onto> {
+    ?policy a :StaffPolicy ;
+            :appliesLevel ?level ;
+            :ratioPerCapita ?ratioPerCapita ;
+            :minStaff ?minStaff ;
+            :roleWeightSecurity ?wSec ;
+            :roleWeightGuide    ?wGuide ;
+            :roleWeightCashier  ?wCash .
+  }
+
+  # 3) 장소 인구통계 (보정 규칙용)
+  GRAPH <http://k.fc/onto> {
+    :place_POI014 :femaleRate ?female ;
+                   :ageRate_20 ?age20 ;
+                   :ageRate_30 ?age30 .
+  }
+
+  # 4) 시간대 가중치 (옵션)
+  BIND(HOURS(?t) AS ?hour)
+  OPTIONAL {
+    GRAPH <http://k.fc/onto> {
+      ?tb a :TimeBand ;
+          :bandStartHour ?hS ; :bandEndHour ?hE ;
+          :securityMultiplier ?securityMul0 .
+    }
+    FILTER(?hS <= ?hour && ?hour < ?hE)
+  }
+  BIND(COALESCE(?securityMul0, 1.0) AS ?securityMul)
+
+  # 5) 기본 인원 (비율/최소)
+  BIND( CEIL( xsd:decimal(?max) / xsd:decimal(?ratioPerCapita) ) AS ?staffByRatio )
+  BIND( IF(?staffByRatio < ?minStaff, ?minStaff, ?staffByRatio) AS ?staffBase )
+
+  # 6) 시간대 가중치 적용 (총원은 보전, 분배 비중만 보정)
+  BIND( ?wSec * ?securityMul AS ?wSec2 )
+  BIND( (?wSec2 + ?wGuide + ?wCash) AS ?wSum )
+  BIND( ?staffBase AS ?staffAfterMul )
+
+  # 7) 인구통계 보정 (예: 여성비 > threshold면 가이드 +extra)
+  OPTIONAL {
+    GRAPH <http://k.fc/onto> {
+      ?rule a :DemographicRule ;
+            :metric :femaleRate ;
+            :threshold ?th ;
+            :extraStaff ?extra ;
+            :extraStaffRole :RoleGuide .
+    }
+  }
+  BIND( IF(BOUND(?rule) && xsd:decimal(?female) > xsd:decimal(?th),
+           xsd:decimal(?extra), 0) AS ?demoExtra )
+
+  # 8) 역할 배분 (정규화 후 배분)
+  BIND( CEIL(?staffAfterMul * (?wSec2 / ?wSum)) AS ?secStaff0 )
+  BIND( CEIL(?staffAfterMul * (?wGuide  / ?wSum)) AS ?guideStaff0 )
+  BIND( ?staffAfterMul - ?secStaff0 - ?guideStaff0 AS ?cashierStaff0 )
+
+  # 9) 최종 (인구통계 보정 반영)
+  BIND( ?secStaff0 AS ?secStaff )
+  BIND( ?guideStaff0 + ?demoExtra AS ?guideStaff )
+  BIND( ?cashierStaff0 AS ?cashierStaff )
+
+  # 10) 총원 산출
+  BIND( (?secStaff + ?guideStaff + ?cashierStaff) AS ?staffFinal )
+}
+ORDER BY ?t
+

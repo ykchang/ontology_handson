@@ -1,0 +1,94 @@
+# ---------------------------------------------
+# Prefix 선언: 온톨로지 네임스페이스와 XSD 데이터타입
+# ---------------------------------------------
+@prefix :    <http://k.fc/onto#> .                 # 프로젝트 전용 온톨로지 네임스페이스
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . # 표준 스키마 데이터타입(prefix만 사용, 본 문서에서는 숫자/시간 등 리터럴에 활용 가능)
+
+# ---------------------------------------------
+# 역할(Role) 정의: 지원 인력을 역할 단위로 분류
+# ---------------------------------------------
+:RoleSecurity a :Role .                             # 안전/질서 유지 담당 역할(Role의 인스턴스)
+:RoleGuide    a :Role .                             # 안내/흐름 조정 담당 역할(Role의 인스턴스)
+:RoleCashier  a :Role .                             # 결제/발권/상거래 지원 역할(Role의 인스턴스)
+
+# ---------------------------------------------
+# 혼잡도별 기본 정책(StaffPolicy): 인력 산정 규칙
+# 비율(ratioPerCapita)은 "1명당 담당 인구수"를 의미
+# minStaff는 최소 인원(하한)
+# roleWeight*는 역할별 비중(합계 1.0 권장)
+# ---------------------------------------------
+
+:policy_boom a :StaffPolicy ;                       # 붐빔(최고 혼잡) 상황에서 적용할 정책
+  :appliesLevel "붐빔" ;                            # 이 정책이 적용되는 혼잡도 수준(문자열 라벨)
+  :ratioPerCapita 4000 ;                            # 1명당 4,000명 담당 → 인구/4,000을 올림(CEIL)하여 기본 인원 산정
+  :minStaff 15 ;                                    # 최소 인원 하한(15명)
+  :roleWeightSecurity 0.4 ;                         # 보안 역할 비중 40%
+  :roleWeightGuide    0.4 ;                         # 안내 역할 비중 40%
+  :roleWeightCashier  0.2 .                         # 결제 역할 비중 20%
+
+:policy_busy a :StaffPolicy ;                       # 약간 붐빔(상당 혼잡) 상황에서 적용할 정책
+  :appliesLevel "약간 붐빔" ;                        # 적용 혼잡도 수준
+  :ratioPerCapita 6000 ;                            # 1명당 6,000명 담당
+  :minStaff 10 ;                                    # 최소 10명 보장
+  :roleWeightSecurity 0.3 ;                         # 보안 역할 30%
+  :roleWeightGuide    0.4 ;                         # 안내 역할 40%
+  :roleWeightCashier  0.3 .                         # 결제 역할 30%
+
+:policy_normal a :StaffPolicy ;                     # 보통(중간 혼잡) 상황에서 적용할 정책
+  :appliesLevel "보통" ;                            # 적용 혼잡도 수준
+  :ratioPerCapita 8000 ;                            # 1명당 8,000명 담당
+  :minStaff 6 ;                                     # 최소 6명 보장
+  :roleWeightSecurity 0.25 ;                        # 보안 25%
+  :roleWeightGuide    0.45 ;                        # 안내 45%
+  :roleWeightCashier  0.30 .                        # 결제 30%
+
+:policy_easy a :StaffPolicy ;                       # 여유(낮은 혼잡) 상황에서 적용할 정책
+  :appliesLevel "여유" ;                             # 적용 혼잡도 수준
+  :ratioPerCapita 12000 ;                           # 1명당 12,000명 담당
+  :minStaff 3 ;                                     # 최소 3명 보장
+  :roleWeightSecurity 0.2 ;                         # 보안 20%
+  :roleWeightGuide    0.5 ;                         # 안내 50%
+  :roleWeightCashier  0.3 .                         # 결제 30%
+
+# ---------------------------------------------
+# 시간대 가중치(TimeBand): 특정 시간 구간에 추가 가중치 적용
+# bandStartHour ~ bandEndHour는 [시작, 종료) 반개구간(종료 미포함)
+# securityMultiplier는 보안 역할 비중 가중치(예: 1.2면 20% 상향)
+# ---------------------------------------------
+
+:timeband_rush a :TimeBand ;                        # 러시 타임(퇴근/저녁 피크)을 나타내는 밴드
+  :bandStartHour 18 ;                               # 시작 시각(18시 포함)
+  :bandEndHour 21 ;                                 # 종료 시각(21시 미포함) → 18,19,20시 적용
+  :securityMultiplier 1.2 .                         # 보안 역할 가중치 1.2배(20% 상향)
+
+:timeband_late a :TimeBand ;                        # 심야대(23~24시) 밴드
+  :bandStartHour 23 ;                               # 시작 23시 포함
+  :bandEndHour 24 ;                                 # 종료 24시 미포함
+  :securityMultiplier 1.1 .                         # 보안 역할 가중치 1.1배(10% 상향)
+
+:timeband_late2 a :TimeBand ;                       # 자정 이후(00~02시) 별도 분리 밴드
+  :bandStartHour 0 ;                                # 시작 0시 포함
+  :bandEndHour 2 ;                                  # 종료 2시 미포함(0,1시 적용)
+  :securityMultiplier 1.1 .                         # 보안 역할 가중치 1.1배(10% 상향)
+
+# ---------------------------------------------
+# 인구통계 보정 규칙(DemographicRule)
+# 조건: 여성 비율(:femaleRate) > 50.0 일 때
+# 효과: 안내 역할(RoleGuide)에 추가 인원(extraStaff) 배정
+# ---------------------------------------------
+
+:demoRule_femaleBias a :DemographicRule ;           # 여성 편중 시 안내 인력 보강 규칙
+  :metric :femaleRate ;                             # 평가 지표(여성 비율, %)
+  :threshold 50.0 ;                                 # 임계값 50.0(%)
+  :extraStaff 1 ;                                   # 조건 충족 시 추가 투입 인원 1명
+  :extraStaffRole :RoleGuide .                      # 추가 인원은 안내 역할로 배정
+
+# ---------------------------------------------
+# 모델링 메모(비가시 트리플, 주석만 제공)
+# - StaffPolicy는 혼잡도 문자열(:appliesLevel)과 조인되어 적용됩니다.
+# - ratioPerCapita는 인구/비율 → 올림(CEIL)으로 기본 인원 산정에 사용됩니다.
+# - minStaff로 하한을 보장합니다.
+# - DemographicRule은 인구통계 조건(여성 비율 등)에 따라 특정 역할을 보강합니다.
+# - 모든 값은 장소/이벤트의 특성에 맞춰 조정 가능합니다(도메인 맞춤 파라미터).
+# ---------------------------------------------
+
