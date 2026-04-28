@@ -1,4 +1,4 @@
-@prefix : <http://k.fc/onto#> .
+@prefix : <http://k.doverenc/onto#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -29,7 +29,7 @@
     :forecastPopulationMax 96000 ;
     :forecastPopulationMin 94000 ;
     :forecastTime "2025-09-26T16:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T160000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T160000" .
 
 :forecast_POI014_20250926T170000 a :Forecast ;
     rdfs:label "강남역 2025-09-26 17:00 예측"@ko ;
@@ -38,7 +38,7 @@
     :forecastPopulationMax 94000 ;
     :forecastPopulationMin 92000 ;
     :forecastTime "2025-09-26T17:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T170000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T170000" .
 
 :forecast_POI014_20250926T180000 a :Forecast ;
     rdfs:label "강남역 2025-09-26 18:00 예측"@ko ;
@@ -47,7 +47,7 @@
     :forecastPopulationMax 92000 ;
     :forecastPopulationMin 90000 ;
     :forecastTime "2025-09-26T18:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T180000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T180000" .
 
 :forecast_POI014_20250926T190000 a :Forecast ;
     rdfs:label "강남역 2025-09-26 19:00 예측"@ko ;
@@ -56,7 +56,7 @@
     :forecastPopulationMax 90000 ;
     :forecastPopulationMin 88000 ;
     :forecastTime "2025-09-26T19:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T190000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T190000" .
 
 :forecast_POI014_20250926T200000 a :Forecast ;
     rdfs:label "강남역 2025-09-26 20:00 예측"@ko ;
@@ -65,7 +65,7 @@
     :forecastPopulationMax 86000 ;
     :forecastPopulationMin 84000 ;
     :forecastTime "2025-09-26T20:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T200000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T200000" .
 
 :forecast_POI014_20250926T210000 a :Forecast ;
     rdfs:label "강남역 2025-09-26 21:00 예측"@ko ;
@@ -74,7 +74,7 @@
     :forecastPopulationMax 78000 ;
     :forecastPopulationMin 76000 ;
     :forecastTime "2025-09-26T21:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T210000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T210000" .
 
 :forecast_POI014_20250926T220000 a :Forecast ;
     rdfs:label "강남역 2025-09-26 22:00 예측"@ko ;
@@ -83,7 +83,7 @@
     :forecastPopulationMax 70000 ;
     :forecastPopulationMin 68000 ;
     :forecastTime "2025-09-26T22:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T220000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T220000" .
 
 :forecast_POI014_20250926T230000 a :Forecast ;
     rdfs:label "강남역 2025-09-26 23:00 예측"@ko ;
@@ -92,7 +92,7 @@
     :forecastPopulationMax 58000 ;
     :forecastPopulationMin 56000 ;
     :forecastTime "2025-09-26T23:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250926T230000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250926T230000" .
 
 :forecast_POI014_20250927T000000 a :Forecast ;
     rdfs:label "강남역 2025-09-27 00:00 예측"@ko ;
@@ -101,7 +101,7 @@
     :forecastPopulationMax 46000 ;
     :forecastPopulationMin 44000 ;
     :forecastTime "2025-09-27T00:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250927T000000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250927T000000" .
 
 :forecast_POI014_20250927T010000 a :Forecast ;
     rdfs:label "강남역 2025-09-27 01:00 예측"@ko ;
@@ -110,7 +110,7 @@
     :forecastPopulationMax 36000 ;
     :forecastPopulationMin 34000 ;
     :forecastTime "2025-09-27T01:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250927T010000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250927T010000" .
 
 :forecast_POI014_20250927T020000 a :Forecast ;
     rdfs:label "강남역 2025-09-27 02:00 예측"@ko ;
@@ -119,7 +119,7 @@
     :forecastPopulationMax 30000 ;
     :forecastPopulationMin 28000 ;
     :forecastTime "2025-09-27T02:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250927T020000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250927T020000" .
 
 :forecast_POI014_20250927T030000 a :Forecast ;
     rdfs:label "강남역 2025-09-27 03:00 예측"@ko ;
@@ -128,7 +128,7 @@
     :forecastPopulationMax 26000 ;
     :forecastPopulationMin 24000 ;
     :forecastTime "2025-09-27T03:00:00"^^xsd:dateTime ;
-    :iri "http://k.fc/onto#forecast_POI014_20250927T030000" .
+    :iri "http://k.doverenc/onto#forecast_POI014_20250927T030000" .
 
 :hasCongestionLevel rdfs:label "congestion level" .
 
@@ -150,7 +150,7 @@
 
 :response_POI014_20250926T151500 a :Response ;
     :aboutPlace :place_POI014 ;
-    :iri "http://k.fc/onto#response_POI014_20250926T151500" ;
+    :iri "http://k.doverenc/onto#response_POI014_20250926T151500" ;
     :resultCode "INFO-000" ;
     :resultMessage "정상 처리되었습니다." .
 
@@ -181,7 +181,7 @@
     :femaleRate 51.3 ;
     :hasCongestionLevel "붐빔" ;
     :hasForecast true ;
-    :iri "http://k.fc/onto#place_POI014" ;
+    :iri "http://k.doverenc/onto#place_POI014" ;
     :maleRate 48.7 ;
     :nonResidentRate 52.1 ;
     :populationMax 96000 ;

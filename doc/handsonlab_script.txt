@@ -2,6 +2,11 @@
 ## Chapter 1. 프롤로그 및 서울시 실시간 도시 데이터
 #############################################
 
+0. Hands On Lab 자료 github에서 복제
+
+cd /home/user/Desktop/
+git clone https://github.com/ykchang/ontology_handson.git materials
+
 // Ontology를 이해해고, 기본적인 실습을 통해 처리 흐름을 이해한다.
 
 1. 데이터 준비 - Ontology에 사용할 대량 데이터
@@ -10,7 +15,14 @@
     - API KEY 생성 (개별적으로 생성해야 함) : 63594d697874696e3131384965436d72
     - API 호출 sample (JSON) - 그 외 JAVA, PYTHON 등 샘플 문서 제공
     
-    curl -s http://openapi.seoul.go.kr:8088/63594d697874696e3131384965436d72/json/citydata_ppltn/1/5/강남역 | jq
+    #ubuntu user profile에 key 값 셋팅. key 값 셋팅 안하고 사용할 경우 소스 코드 및 url에 api key 직접 설정 후 사용해야 함
+    vi ~/.bashrc
+
+    - 아래와 같이 환경 변수 값 추가 후 저장. 다음 로그인 부터 값 반영됨
+    S_API_KEY=1111111111111111111111111111111
+    export S_API_KEY
+
+    curl -s http://openapi.seoul.go.kr:8088/$S_API_KEY/json/citydata_ppltn/1/5/강남역 | jq
     
     * jq 명령은 json 문서를 formatting 한다. LINUX에서 제공
 
@@ -119,7 +131,7 @@
       내부접속 : http://127.0.0.1:3000
       외부접속 : http://<host_ip_address>:3080
     
-    2) Standalone 으로 설치할 경우 (OS 및 PYTHON 환경에 영향 많이 받음. 관련 MANUAL 참고)
+    2) Standalone 으로 설치. (권장하지 않음) (OS 및 PYTHON 환경에 영향 많이 받음. 관련 MANUAL 참고)
     
     git clone https://github.com/open-webui/open-webui.git
     cd open-webui
@@ -152,6 +164,8 @@
 
 4. Apache Jena Fuseki 준비
 
+    ## 서울시 도시 데이터 연계 ##
+
     # Apache Jena Fuseki : Apache Jena Framework에서 제공하는 SPARQL 서버. 시맨틱 웹에서 RDF 데이터를 HTTP를 통해 질의하고 관리할 수 있는 강력한 트리플스토어 솔루션
     
     1) Apache Jena Fuseki 설치
@@ -168,65 +182,189 @@
     
     # 참고 사항
     - -mem option : mememory에 정보저장한다는 의미
-    - /fc : 원하는 이름 지정
+    - /doverenc : 원하는 이름 지정
     - memory에 저장하는 관계로 서버 재기동시 데이터 유실됨. 방지하기 위해서는 별도 저장소에 저장 필요
     
     - firewall 해제 : ubuntu firewall 사용 하는 경우
     sudo ufw allow 3030/tcp
     sudo systemctl restart ufw
- 
+
+    - web brower 에서 fuseki 화면 접속
+    
+    http://192.168.0.52:3030
+
 
     2) Fuseki 서버 활용 (첨부 소스 코드 사용)
-     
-curl -s http://openapi.seoul.go.kr:8088/63594d697874696e3131384965436d72/json/citydata_ppltn/1/5/강남역 | jq
 
-    cd /home/yoonchan/src/study/ontology/01-02-oag/convert 
+    - 서울시 데이터 json 으로 저장
+    cd /home/user/Desktop/materials/part1/01-02-oag/convert/
+    curl -s http://openapi.seoul.go.kr:8088/63594d697874696e3131384965436d72/json/citydata_ppltn/1/5/강남역 | jq > gangnam.json
+
+    - python 가상 환경 설정
     python3 -m venv .venv
     source .venv/bin/activate
     
+    - json 파일 fuseki 파일 format 으로 변환. 변환 프로그램인 seoul_json_to_ttl.py에 대한 소스 코드 설명은 생략
     pip install -r requirements.txt
     python seoul_json_to_ttl.py --input gangnam.json --output gangnam.ttl
     
-    curl -X POST \
-      -H "Content-Type: text/turtle" \
-      --data-binary @gannam.ttl \
-      "http://localhost:3030/fc/data?graph=http://k.fc/onto#"
-    
-    
-    Fuseki 접속. Query 에서 아래 조건으로 실행
-    
+    - fuseki 서버에 변환된 ttl 파일 post. Fuseki UI 화면에서 import 해도 됨
+    curl -X POST -H "Content-Type: text/turtle" \
+        --data-binary @gangnam.ttl \
+        "http://127.0.0.1:3030/doverenc/data?graph=http://k.doverenc/onto#"
+
+    - curl 명령 실행하면 아래와 같이 149개의 데이터가 생성되었다고 나옴.
+
+        { 
+            "count" : 149 ,
+            "tripleCount" : 149 ,
+            "quadCount" : 0
+        }
+
+    - Fuseki 접속. Query 에서 아래 조건으로 실행
+        
+    ============================================================================
+
     SELECT ?subject ?predicate ?object
     WHERE {
       GRAPH ?g {
         ?subject ?predicate ?object
       }
     }
+
+    ============================================================================
+
+    ## 추천 시스템에서 온톨로지 활용 ##
+    - 강남역 혼잡도와 상황에 따라 인력 배치 활용 추천
+
     
-    3) 향후 계선 사항
-    
-    memory에 데이터를 담았기 때문에 서버 재기동 등이 발생하였을 경우 데이터 유실됨.
-    memory가 아닌 영구 저장소 사용으로 변경 필요. -> LAB에는 포함시키지 않음
-    
-    4) Policy 이용
-    
-    cd /home/yoonchan/src/study/ontology/01-03-rules
-    python3 -m venv .venv
-    source .venv/bin/activate
-    
+    3) Policy 이용
+
+    - 데이터에 대한 정책 정보인 TTL 파일을 Fuseki에 반영
+    cd /home/user/Desktop/materials/part1/01-03-rules
+
     curl -X POST \
       -H "Content-Type: text/turtle" \
       --data-binary @policy.ttl \
-      "http://localhost:3030/fc/data?graph=http://k.fc/onto#"
+      "http://localhost:3030/doverenc/data?graph=http://k.doverenc/onto#"
+
+    - curl 명령 실행하면 아래와 같이 48개의 데이터가 생성되었다고 나옴.
+
+        { 
+            "count" : 48 ,
+            "tripleCount" : 48 ,
+            "quadCount" : 0
+        }
+
+    - Fuseki UI에 접속해서 아래 SPARQL QUERY를 실행 시킴. 아래 위치에 sql 있음.
+
+    vi query.sparql
+    
+    ============================================================================
+
+    PREFIX :    <http://k.doverenc/onto#>
+    PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+    SELECT ?t ?level ?min ?max
+        ?ratioPerCapita ?minStaff
+        ?hour
+        ?securityMul
+        ?female ?age20 ?age30
+        ?staffBase ?staffAfterMul ?staffFinal
+        ?secStaff ?guideStaff ?cashierStaff
+    WHERE {
+    # 1) 예측 (강남역)
+    GRAPH <http://k.doverenc/onto> {
+        ?f a :Forecast ;
+        :forPlace :place_POI014 ;
+        :forecastTime ?t ;
+        :forecastCongestionLevel ?level ;
+        :forecastPopulationMin ?min ;
+        :forecastPopulationMax ?max .
+    }
+
+    # 2) 혼잡도 → 정책 매핑
+    GRAPH <http://k.doverenc/onto> {
+        ?policy a :StaffPolicy ;
+                :appliesLevel ?level ;
+                :ratioPerCapita ?ratioPerCapita ;
+                :minStaff ?minStaff ;
+                :roleWeightSecurity ?wSec ;
+                :roleWeightGuide    ?wGuide ;
+                :roleWeightCashier  ?wCash .
+    }
+
+    # 3) 장소 인구통계 (보정 규칙용)
+    GRAPH <http://k.doverenc/onto> {
+        :place_POI014 :femaleRate ?female ;
+                    :ageRate_20 ?age20 ;
+                    :ageRate_30 ?age30 .
+    }
+
+    # 4) 시간대 가중치 (옵션)
+    BIND(HOURS(?t) AS ?hour)
+    OPTIONAL {
+        GRAPH <http://k.doverenc/onto> {
+        ?tb a :TimeBand ;
+            :bandStartHour ?hS ; :bandEndHour ?hE ;
+            :securityMultiplier ?securityMul0 .
+        }
+        FILTER(?hS <= ?hour && ?hour < ?hE)
+    }
+    BIND(COALESCE(?securityMul0, 1.0) AS ?securityMul)
+
+    # 5) 기본 인원 (비율/최소)
+    BIND( CEIL( xsd:decimal(?max) / xsd:decimal(?ratioPerCapita) ) AS ?staffByRatio )
+    BIND( IF(?staffByRatio < ?minStaff, ?minStaff, ?staffByRatio) AS ?staffBase )
+
+    # 6) 시간대 가중치 적용 (총원은 보전, 분배 비중만 보정)
+    BIND( ?wSec * ?securityMul AS ?wSec2 )
+    BIND( (?wSec2 + ?wGuide + ?wCash) AS ?wSum )
+    BIND( ?staffBase AS ?staffAfterMul )
+
+    # 7) 인구통계 보정 (예: 여성비 > threshold면 가이드 +extra)
+    OPTIONAL {
+        GRAPH <http://k.doverenc/onto> {
+        ?rule a :DemographicRule ;
+                :metric :femaleRate ;
+                :threshold ?th ;
+                :extraStaff ?extra ;
+                :extraStaffRole :RoleGuide .
+        }
+    }
+    BIND( IF(BOUND(?rule) && xsd:decimal(?female) > xsd:decimal(?th),
+            xsd:decimal(?extra), 0) AS ?demoExtra )
+
+    # 8) 역할 배분 (정규화 후 배분)
+    BIND( CEIL(?staffAfterMul * (?wSec2 / ?wSum)) AS ?secStaff0 )
+    BIND( CEIL(?staffAfterMul * (?wGuide  / ?wSum)) AS ?guideStaff0 )
+    BIND( ?staffAfterMul - ?secStaff0 - ?guideStaff0 AS ?cashierStaff0 )
+
+    # 9) 최종 (인구통계 보정 반영)
+    BIND( ?secStaff0 AS ?secStaff )
+    BIND( ?guideStaff0 + ?demoExtra AS ?guideStaff )
+    BIND( ?cashierStaff0 AS ?cashierStaff )
+
+    # 10) 총원 산출
+    BIND( (?secStaff + ?guideStaff + ?cashierStaff) AS ?staffFinal )
+    }
+    ORDER BY ?t
+
+    ============================================================================
+
 
 
 5. Ontology 조회
 
     ollama와 fuseki 학습 데이터 조합해서 query 수행
    
-    cd /home/yoonchan/src/study/ontology/01-02-oag/oag
-    pip install -r requirements.txt
+    cd /home/user/Desktop/materials/part1/01-02-oag/oag
+
+    python3 -m venv .venv
+    source .venv/bin/activate
     
-    -- 명령을 실행해서 학습 데이터를 조회한다.    
+    - Fuseki UI가 아닌 python을 이용해서 학습 데이터를 조회한다.
+    pip install -r requirements.txt    
     python ask_query.py --question "강남역의 붐비는 시간대를 나열해줘"
     python ask_query.py --question "강남역의 붐비는 시간대는 언제입니까?"
 
@@ -235,6 +373,14 @@ curl -s http://openapi.seoul.go.kr:8088/63594d697874696e3131384965436d72/json/ci
 
     FASTCAMPUS 강의에 사용한 JBoss의 jBpm이 deprecated 되었음.
     Hands On Lab에서는 제외
+
+
+7. 향후 Skill Up 해야 할 것
+    
+    - memory에 데이터를 담았기 때문에 서버 재기동 등이 발생하였을 경우 데이터 유실됨
+    - memory가 아닌 영구 저장소 사용으로 변경 필요. -> LAB에는 포함시키지 않음
+    - SPARQL에 대한 내용은 포함 시키지 않음 -> 데이터 활용하려면 알아야 하며 RDBMS의 SQL과는 다르다.
+
 
 
 #############################################
@@ -269,7 +415,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 PREFIX spatialf: <http://jena.apache.org/function/spatial#>
 PREFIX uom: <http://www.opengis.net/def/uom/OGC/1.0/>
-PREFIX cctv: <http://k.fc/onto/cctv#>
+PREFIX cctv: <http://k.doverenc/onto/cctv#>
 
 SELECT ?cctv ?name ?wkt
 WHERE {
@@ -312,3 +458,114 @@ WHERE {
   
   
   
+#############################################
+## Additional 1. Ubunu 설정 (24.04 기준)
+#############################################
+
+# root 계정 login 되도록 설정 - 아래 명령 수행 후 root password 설정
+sudo passwd root
+
+# Hands On Lab을 위해 apt로 설치해야 하는 것들
+sudo apt install net-tools curl openjdk-21-jdk-headless maven
+sudo apt install python3.12-venv
+
+# 외부 host 에서 ubuntu 접속 허용
+# - 학인 필요 사항 : Virtual Box에서 Network 설정을 Bridge로 해야 외부에서 접속 가능
+sudo apt install openssh-server
+sudo systemctl enable ssh
+sudo systemctl status ssh
+sudo ufw allow 22/tcp
+
+#############################################
+## Additiona2 2. Docker 설치 및 사용 (Ubuntu 24.04 기준)
+#############################################
+
+# docker 설치 https://docs.docker.com/engine/install/ubuntu/ 참조해서 진행
+-- old 버전 삭제 (필요한 경우, RedHat 일 경우 삭제 반드시 필요)
+sudo apt remove $(dpkg --get-selections docker.io docker-compose docker-compose-v2 docker-doc podman-docker containerd runc | cut -f1)
+
+# Add Docker's official GPG key:
+-- 아래 4라인 동시 실행
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+-- 아래 sudo 부터 EOF 까지 동시 실행
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+-- Ubuntu APT Repository update
+sudo apt update
+
+# Install the Docker packages
+-- 아래 4개 명령 순차적으로 진행
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl status docker
+sudo systemctl start docker
+
+-- 테스트용 docker 실행
+sudo docker run hello-world
+
+-- hello-world 실행해서 아래와 같은 메세지 나오면 docker 설치 및 설정 정상적으로 완료
+
+    Unable to find image 'hello-world:latest' locally
+    latest: Pulling from library/hello-world
+    4f55086f7dd0: Pull complete 
+    d5e71e642bf5: Download complete 
+    Digest: sha256:f9078146db2e05e794366b1bfe584a14ea6317f44027d10ef7dad65279026885
+    Status: Downloaded newer image for hello-world:latest
+
+    Hello from Docker!
+    This message shows that your installation appears to be working correctly.
+
+    To generate this message, Docker took the following steps:
+    1. The Docker client contacted the Docker daemon.
+    2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+        (amd64)
+    3. The Docker daemon created a new container from that image which runs the
+        executable that produces the output you are currently reading.
+    4. The Docker daemon streamed that output to the Docker client, which sent it
+        to your terminal.
+
+    To try something more ambitious, you can run an Ubuntu container with:
+    $ docker run -it ubuntu bash
+
+    Share images, automate workflows, and more with a free Docker ID:
+    https://hub.docker.com/
+
+    For more examples and ideas, visit:
+    https://docs.docker.com/get-started/
+
+
+# docker 초기화 : 초기화 후에는 데이터 복구가 불가능하므로 주의 필요
+# - Hands on lab을 진행하다 처음부터 다시하고 싶을 경우 1. 가상머신 Snapshot을 초기로 돌린다, 2. docker를 초기화한다.
+
+- 모든 docker container 제거
+sudo docker rm -f $(sudo docker ps -aq)
+
+- 모든 docker image 제거
+sudo docker rmi -f $(sudo docker images -aq)
+
+- 모든 docker network 제거
+sudo docker network prune -f
+
+- 모든 docker volumn 제거
+sudo docker volume prune -f
+
+- 모든 docker data 제거
+sudo docker system prune -af
+
+
+# docker container 자동 재기동
+# - OS 재기동 등으로 DOCKER가 종료될 경우 docker container가 자동으로 실행되지 않는다.
+# - 아래 명령을 이용하면 자동 재실행이 된다.
+
+docker update --restart=always <container_id>

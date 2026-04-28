@@ -7,7 +7,7 @@
 - list_by_level:  특정 혼잡도(level) 시간대 나열  (기존 동작)
 - peak_time:      가장 붐빌(피크) 시간 1건(또는 상위 N)  ← 추가
 
-데이터 전제: Fuseki named graph = http://k.fc/onto (강남역 TTL 업로드 완료)
+데이터 전제: Fuseki named graph = http://k.doverenc/onto (강남역 TTL 업로드 완료)
 
 준비:
   ollama serve
@@ -30,8 +30,8 @@ from langchain_ollama import ChatOllama  # 권장 패키지
 # ----------------------------
 # 환경설정
 # ----------------------------
-SPARQL_ENDPOINT = os.environ.get("SPARQL_ENDPOINT", "http://localhost:3030/fc/query")
-GRAPH_IRI       = os.environ.get("GRAPH_IRI",       "http://k.fc/onto")
+SPARQL_ENDPOINT = os.environ.get("SPARQL_ENDPOINT", "http://localhost:3030/doverenc/query")
+GRAPH_IRI       = os.environ.get("GRAPH_IRI",       "http://k.doverenc/onto")
 OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
 OLLAMA_MODEL    = os.environ.get("OLLAMA_MODEL",    "qwen3")  # 로컬 pull 된 모델명
 
@@ -42,7 +42,7 @@ def llm_client() -> ChatOllama:
 # SPARQL 템플릿
 # ----------------------------
 RESOLVE_PLACE_BY_LABEL = Template("""
-PREFIX :    <http://k.fc/onto#>
+PREFIX :    <http://k.doverenc/onto#>
 PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?p
 WHERE {
@@ -57,7 +57,7 @@ LIMIT 1
 
 # level 시간대 나열
 FORECAST_TIMES_BY_LEVEL = Template("""
-PREFIX :    <http://k.fc/onto#>
+PREFIX :    <http://k.doverenc/onto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT ?t
 WHERE {
@@ -74,7 +74,7 @@ ORDER BY ?t
 
 # 피크 시간(가장 붐빔 = 인구상한 최대) 상위 N
 FORECAST_PEAK_TIME = Template("""
-PREFIX :    <http://k.fc/onto#>
+PREFIX :    <http://k.doverenc/onto#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT ?t ?lvl ?min ?max
 WHERE {

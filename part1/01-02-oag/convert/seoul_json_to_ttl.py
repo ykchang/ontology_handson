@@ -111,7 +111,7 @@ def main():
     ap = argparse.ArgumentParser(description="Seoul citydata_ppltn JSON → TTL (local names, full coverage)")
     ap.add_argument("--input", required=True)
     ap.add_argument("--output", required=True)
-    ap.add_argument("--base", default="http://k.fc/onto#")
+    ap.add_argument("--base", default="http://k.doverenc/onto#")
     ap.add_argument("--place-code", default=None)
     ap.add_argument("--label-lang", default="ko", help="language tag for rdfs:label (default: ko)")
     ap.add_argument("--keep-raw-json", action="store_true", help="store non-scalar values as JSON strings")
