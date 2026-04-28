@@ -353,8 +353,7 @@ git clone https://github.com/ykchang/ontology_handson.git materials
     ============================================================================
 
 
-
-5. Ontology 조회
+5. Python을 이용한 Ontology 조회
 
     ollama와 fuseki 학습 데이터 조합해서 query 수행
    
@@ -368,6 +367,16 @@ git clone https://github.com/ykchang/ontology_handson.git materials
     python ask_query.py --question "강남역의 붐비는 시간대를 나열해줘"
     python ask_query.py --question "강남역의 붐비는 시간대는 언제입니까?"
 
+    -- python 실행 결과는 아래와 같으며 주요 데이터는 Fuseki에서 가져오고 이 데이터를 기반으로 ollama qwen3 모델에서 자연어로 변경해서 리턴한다.
+
+    (.venv) user@ontology:~/Desktop/materials/part1/01-02-oag/oag$ python ask_query.py --question "강남역의 붐비는 시간대를 나열해줘"
+    작업유형: list_by_level, 장소: 강남역, 혼잡도 단계: boom, 시간범위: 지정 없음. 결과: 조회되지 않았음 (해당 조건에 맞는 데이터가 없습니다).
+    (.venv) user@ontology:~/Desktop/materials/part1/01-02-oag/oag$ python ask_query.py --question "강남역의 붐비는 시간대는 언제입니까?"
+    작업유형(list_by_level)에 대해 강남역의 혼잡도 단계(boombeon) 데이터를 조회하려 했으나, 결과값이 존재하지 않음.  
+    - 혼잡도 단계 'boombeon'이 잘못된 값이거나, 해당 위치/단계에 대한 데이터가 없음.  
+    - 시간범위 지정 없이 조회했으나, 결과가 비어 있음.
+    (.venv) user@ontology:~/Desktop/materials/part1/01-02    
+
 
 6. BPM 이용한 프로세스 처리
 
@@ -380,7 +389,6 @@ git clone https://github.com/ykchang/ontology_handson.git materials
     - memory에 데이터를 담았기 때문에 서버 재기동 등이 발생하였을 경우 데이터 유실됨
     - memory가 아닌 영구 저장소 사용으로 변경 필요. -> LAB에는 포함시키지 않음
     - SPARQL에 대한 내용은 포함 시키지 않음 -> 데이터 활용하려면 알아야 하며 RDBMS의 SQL과는 다르다.
-
 
 
 #############################################
