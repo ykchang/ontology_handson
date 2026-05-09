@@ -1,0 +1,18 @@
+@prefix :      <http://k.fc/onto/citydata#> .
+@prefix inst:  <http://k.fc/onto/citydata/instance/> .
+@prefix geo:   <http://www.opengis.net/ont/geosparql#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+# 강남역(POI014) 장소
+inst:GangnamStationArea
+    geo:hasGeometry [
+        a geo:Point ;
+        geo:asWKT "<http://www.opengis.net/def/crs/EPSG/0/4326> POINT(127.0286271 37.4970487)"^^geo:wktLiteral
+    ] .
+
+# EV 충전기 → 서초 삼성 쉐르빌 2 주차장 
+inst:EVCharger_HM110167_01
+    a :EVCharger ;
+    :hasChargerID "HM110167_01" ;
+    :hasStatus inst:ChargerStatus_HM110167_01_202510311702 ;
+    :locatedIn inst:ParkingLot_3041646 .

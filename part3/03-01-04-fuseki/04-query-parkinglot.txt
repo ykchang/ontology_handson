@@ -1,0 +1,16 @@
+PREFIX : <http://k.fc/onto/citydata#>
+
+SELECT ?parking ?parkingId ?lat ?lon
+WHERE {
+    # 강남역 Area
+    ?area a :Area ;
+          :name "강남역"@ko .
+
+    # 강남역 Area에 위치한 주차장
+    ?parking a :ParkingLot ;
+             :locatedIn ?area ;
+             :id ?parkingId ;
+             :latitude ?lat ;
+             :longitude ?lon .
+}
+ORDER BY ?parkingId

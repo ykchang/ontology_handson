@@ -1,0 +1,76 @@
+# --- START OF FILE 04_ABox_example.ttl ---
+
+@prefix : <http://k.fc/onto/citydata#> .
+@prefix inst: <http://k.fc/onto/citydata/instance/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# '강남역' 지역 인스턴스 생성
+inst:GangnamStationArea rdf:type owl:NamedIndividual , :Area ;
+    :id "POI014" ;
+    :name "강남역"@ko ;
+    :hasStatus inst:PopulationStatus_POI014_202511021350,
+               inst:TrafficStatus_POI014_202511021415 .
+
+# '강남역' 지역의 인구 상태 인스턴스
+inst:PopulationStatus_POI014_202511021350 rdf:type owl:NamedIndividual , :PopulationStatus ;
+    :observationTime "2025-11-02T13:50:00"^^xsd:dateTime ;
+    :congestionLevel "보통"@ko ;
+    :populationMin "46000"^^xsd:integer ;
+    :populationMax "48000"^^xsd:integer ;
+    :malePopulationRate "47.6"^^xsd:decimal .
+
+# '강남역' 지역의 교통 상태 인스턴스
+inst:TrafficStatus_POI014_202511021415 rdf:type owl:NamedIndividual , :TrafficStatus ;
+    :observationTime "2025-11-02T14:15:00"^^xsd:dateTime ;
+    :trafficIndex "서행"@ko ;
+    :speed "18"^^xsd:decimal .
+
+
+# '사임당로'의 특정 도로 구간 인스턴스 생성
+inst:RoadSection_1210020001 rdf:type owl:NamedIndividual , :RoadSection ;
+    :id "1210020001" ;
+    :name "사임당로"@ko ;
+    :distance "320.0"^^xsd:decimal ;
+    :hasStatus inst:TrafficStatus_1210020001_202511021415 . # JSON의 시간 정보를 바탕으로 가정
+
+# 위 도로 구간의 교통 상태 인스턴스
+inst:TrafficStatus_1210020001_202511021415 rdf:type owl:NamedIndividual , :TrafficStatus ;
+    :observationTime "2025-11-02T14:15:00"^^xsd:dateTime ; # JSON의 AVG_ROAD_DATA 시간 사용
+    :trafficIndex "정체"@ko ;
+    :speed "14.0"^^xsd:decimal .
+
+
+# '서초 삼성쉐르빌2 주차장' 인스턴스 생성
+inst:ParkingLot_3041646 rdf:type owl:NamedIndividual , :ParkingLot ;
+    :id "3041646" ;
+    :name "서초 삼성쉐르빌2 주차장"@ko ;
+    :capacity "285"^^xsd:integer ;
+    :isPaid "true"^^xsd:boolean ;
+    :latitude "37.493925"^^xsd:decimal ;
+    :longitude "127.027951"^^xsd:decimal ;
+    :address "서초구 서초동 1330-0"@ko ;
+    :locatedIn inst:GangnamStationArea . # 추론 또는 외부 데이터를 통해 연결 가능
+
+# '_메리츠화재 강남사옥' 충전소 및 충전기 인스턴스 생성
+inst:ChargingStation_HM110167 rdf:type owl:NamedIndividual , :ChargingStation ;
+    :id "HM110167" ;
+    :name "_메리츠화재 강남사옥"@ko ;
+    :latitude "37.4970487"^^xsd:decimal ;
+    :longitude "127.0286271"^^xsd:decimal ;
+    :isLimitedAccess "false"^^xsd:boolean ;
+    :hasCharger inst:EVCharger_HM110167_01 .
+
+inst:EVCharger_HM110167_01 rdf:type owl:NamedIndividual , :EVCharger ;
+    :id "01" ;
+    :chargerType "AC완속"@ko ;
+    :output "7"^^xsd:decimal ;
+    :hasStatus inst:ChargerStatus_HM110167_01_202510311702 .
+
+inst:ChargerStatus_HM110167_01_202510311702 rdf:type owl:NamedIndividual , :ChargerStatus ;
+    :observationTime "2025-10-31T17:02:00"^^xsd:dateTime ;
+    :chargerStatusValue "사용가능"@ko .
+
+# --- END OF FILE 04_ABox_example.ttl ---```

@@ -1,0 +1,21 @@
+PREFIX : <http://k.fc/onto/citydata#>
+
+SELECT ?parking ?parkingId ?charger ?chargerId
+WHERE {
+    # 강남역 Area
+    ?area a :Area ;
+          :name "강남역"@ko .
+
+    # 강남역 Area 내 주차장
+    ?parking a :ParkingLot ;
+             :locatedIn ?area ;
+             :id ?parkingId .
+
+    # 주차장에 속한 충전기
+    OPTIONAL {
+        ?charger a :EVCharger ;
+                 :locatedIn ?parking ;
+                 :id ?chargerId .
+    }
+}
+ORDER BY ?parkingId

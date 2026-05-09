@@ -1,0 +1,84 @@
+# --- START OF FILE 01_classes.ttl ---
+
+@prefix : <http://k.fc/onto/citydata#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+### Core Concepts ###
+
+# 장소 및 시설 (Physical Things)
+:Area rdf:type owl:Class ;
+    rdfs:label "관심 지역"@ko .
+
+:TransportationPoint rdf:type owl:Class ;
+    rdfs:label "교통 거점"@ko .
+
+:ParkingLot rdf:type owl:Class ;
+    rdfs:label "주차장"@ko .
+
+:RoadSection rdf:type owl:Class ;
+    rdfs:label "도로 구간"@ko .
+
+:Node rdf:type owl:Class ;
+    rdfs:label "노드"@ko .
+
+:SubwayStation rdf:type owl:Class ;
+    rdfs:label "지하철역"@ko .
+
+:BusStop rdf:type owl:Class ;
+    rdfs:label "버스 정류장"@ko .
+
+:BikeStation rdf:type owl:Class ;
+    rdfs:label "따릉이 대여소"@ko .
+
+:ChargingStation rdf:type owl:Class ;
+    rdfs:label "전기차 충전소"@ko .
+
+:EVCharger rdf:type owl:Class ;
+    rdfs:label "전기차 충전기"@ko .
+
+:Facility rdf:type owl:Class ;
+    rdfs:label "편의시설"@ko .
+
+
+# 상태 정보 (Time-varying Status)
+:Status rdf:type owl:Class ;
+    rdfs:label "상태 정보"@ko .
+
+:PopulationStatus rdf:type owl:Class ;
+    rdfs:label "인구 상태"@ko .
+
+:TrafficStatus rdf:type owl:Class ;
+    rdfs:label "교통 상태"@ko .
+
+:WeatherStatus rdf:type owl:Class ;
+    rdfs:label "날씨 상태"@ko .
+
+:CommercialStatus rdf:type owl:Class ;
+    rdfs:label "상권 상태"@ko .
+
+:BusinessCategoryStatus rdf:type owl:Class;
+    rdfs:label "업종별 상권 상태"@ko.
+
+:ChargerStatus rdf:type owl:Class;
+    rdfs:label "충전기 상태"@ko .
+
+
+# 예측 정보 (Forecast Information)
+:Forecast rdf:type owl:Class ;
+    rdfs:label "예측 정보"@ko .
+
+:PopulationForecast rdf:type owl:Class ;
+    rdfs:label "인구 예측"@ko .
+
+:WeatherForecast rdf:type owl:Class ;
+    rdfs:label "날씨 예측"@ko .
+
+
+# 기타 정보
+:SubwayArrivalInfo rdf:type owl:Class ;
+    rdfs:label "지하철 도착 정보"@ko .
+
+# --- END OF FILE 01_classes.ttl ---

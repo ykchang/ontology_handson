@@ -1,0 +1,17 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix : <http://k.fc/onto/citydata#> .
+
+:EVChargerShape a sh:NodeShape ;
+  sh:targetClass :EVCharger ;           # EVCharger 클래스를 대상으로
+  sh:property [
+    sh:path :hasStatus ;                # hasStatus 속성은       
+    sh:class :Status ;                  # Status 중에 하나여야 하며     
+    sh:minCount 1 ;                     # 1개 이상을 가져야한다.
+  ] ;
+  sh:property [
+    sh:path :locatedIn ;                # locatedIn 속성도
+    sh:class :Area ;                    # Area 클래스에 해당하는 개체로
+    sh:minCount 1 ;                     # 최소 1개 이상 정의되어야한다.
+    sh:nodeKind sh:IRI ;                # 단, IRI 유형이어야 함 
+  ] .
+

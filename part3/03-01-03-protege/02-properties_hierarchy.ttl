@@ -1,0 +1,82 @@
+# --- START OF FILE 02_properties_and_hierarchy.ttl ---
+
+@prefix : <http://k.fc/onto/citydata#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+### Class Hierarchy (is-a relationship) ###
+
+:PopulationStatus         rdfs:subClassOf :Status .
+:TrafficStatus            rdfs:subClassOf :Status .
+:WeatherStatus            rdfs:subClassOf :Status .
+:CommercialStatus         rdfs:subClassOf :Status .
+:ChargerStatus            rdfs:subClassOf :Status .
+:BusinessCategoryStatus   rdfs:subClassOf :Status .
+
+:PopulationForecast       rdfs:subClassOf :Forecast .
+:WeatherForecast          rdfs:subClassOf :Forecast .
+
+:ParkingLot               rdfs:subClassOf :TransportationPoint .
+:RoadSection              rdfs:subClassOf :TransportationPoint .
+:SubwayStation            rdfs:subClassOf :TransportationPoint .
+:BusStop                  rdfs:subClassOf :TransportationPoint .
+:BikeStation              rdfs:subClassOf :TransportationPoint .
+:ChargingStation          rdfs:subClassOf :TransportationPoint .
+
+
+### Object Properties (relationships between classes) ###
+
+:hasStatus                rdf:type owl:ObjectProperty ; rdfs:label "상태를 가짐"@ko .
+:hasForecast              rdf:type owl:ObjectProperty ; rdfs:label "예측 정보를 가짐"@ko .
+:hasArrivalInfo           rdf:type owl:ObjectProperty ; rdfs:label "도착 정보를 가짐"@ko .
+:hasFacility              rdf:type owl:ObjectProperty ; rdfs:label "편의시설을 가짐"@ko .
+:hasCharger               rdf:type owl:ObjectProperty ; rdfs:label "충전기를 보유함"@ko .
+:hasStartNode             rdf:type owl:ObjectProperty ; rdfs:label "시작 노드를 가짐"@ko .
+:hasEndNode               rdf:type owl:ObjectProperty ; rdfs:label "종료 노드를 가짐"@ko .
+:hasBusinessCategoryStatus rdf:type owl:ObjectProperty ; rdfs:label "업종별 상태를 가짐"@ko .
+:locatedIn                rdf:type owl:ObjectProperty ; rdfs:label "에 위치함"@ko .
+
+
+### Datatype Properties (attributes of classes) ###
+
+# General
+:name                     rdf:type owl:DatatypeProperty ; rdfs:label "이름"@ko .
+:id                       rdf:type owl:DatatypeProperty ; rdfs:label "ID"@ko .
+:observationTime          rdf:type owl:DatatypeProperty ; rdfs:label "관측 시각"@ko .
+:forecastTime             rdf:type owl:DatatypeProperty ; rdfs:label "예측 시각"@ko .
+:latitude                 rdf:type owl:DatatypeProperty ; rdfs:label "위도"@ko .
+:longitude                rdf:type owl:DatatypeProperty ; rdfs:label "경도"@ko .
+:address                  rdf:type owl:DatatypeProperty ; rdfs:label "주소"@ko .
+
+# Population
+:congestionLevel          rdf:type owl:DatatypeProperty ; rdfs:label "혼잡도 수준"@ko .
+:congestionMessage        rdf:type owl:DatatypeProperty ; rdfs:label "혼잡도 메시지"@ko .
+:populationMin            rdf:type owl:DatatypeProperty ; rdfs:label "최소 인구수"@ko .
+:populationMax            rdf:type owl:DatatypeProperty ; rdfs:label "최대 인구수"@ko .
+:malePopulationRate       rdf:type owl:DatatypeProperty ; rdfs:label "남성 인구 비율"@ko .
+:femalePopulationRate     rdf:type owl:DatatypeProperty ; rdfs:label "여성 인구 비율"@ko .
+
+# Traffic
+:trafficIndex             rdf:type owl:DatatypeProperty ; rdfs:label "교통 지수"@ko .
+:speed                    rdf:type owl:DatatypeProperty ; rdfs:label "속도"@ko .
+:distance                 rdf:type owl:DatatypeProperty ; rdfs:label "거리"@ko .
+
+# Parking
+:capacity                 rdf:type owl:DatatypeProperty ; rdfs:label "총 주차면수"@ko .
+:isPaid                   rdf:type owl:DatatypeProperty ; rdfs:label "유료 여부"@ko .
+
+# EV Charger
+:chargerType              rdf:type owl:DatatypeProperty ; rdfs:label "충전기 타입"@ko .
+:chargerStatusValue       rdf:type owl:DatatypeProperty ; rdfs:label "충전기 상태값"@ko .
+:output                   rdf:type owl:DatatypeProperty ; rdfs:label "충전기 출력"@ko .
+:isLimitedAccess          rdf:type owl:DatatypeProperty ; rdfs:label "이용제한 여부"@ko .
+
+# Weather
+:temperature              rdf:type owl:DatatypeProperty ; rdfs:label "온도"@ko .
+:humidity                 rdf:type owl:DatatypeProperty ; rdfs:label "습도"@ko .
+:precipitation            rdf:type owl:DatatypeProperty ; rdfs:label "강수량"@ko .
+:skyStatus                rdf:type owl:DatatypeProperty ; rdfs:label "하늘 상태"@ko .
+
+# --- END OF FILE 02_properties_and_hierarchy.ttl ---

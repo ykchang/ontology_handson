@@ -1,0 +1,70 @@
+# --- START OF FILE 03_constraints.ttl ---
+
+@prefix : <http://k.fc/onto/citydata#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+### Domain and Range Constraints for Object Properties ###
+
+:hasStatus                rdfs:domain :Area ;
+                          rdfs:range [ owl:unionOf ( :PopulationStatus :TrafficStatus :WeatherStatus :CommercialStatus ) ] .
+:hasForecast              rdfs:domain :Status ;
+                          rdfs:range :Forecast .
+:hasArrivalInfo           rdfs:domain :SubwayStation ;
+                          rdfs:range :SubwayArrivalInfo .
+:hasFacility              rdfs:domain :SubwayStation ;
+                          rdfs:range :Facility .
+:hasCharger               rdfs:domain :ChargingStation ;
+                          rdfs:range :EVCharger .
+:hasStartNode             rdfs:domain :RoadSection ;
+                          rdfs:range :Node .
+:hasEndNode               rdfs:domain :RoadSection ;
+                          rdfs:range :Node .
+:hasBusinessCategoryStatus rdfs:domain :CommercialStatus;
+                           rdfs:range :BusinessCategoryStatus .
+:locatedIn                rdfs:domain :TransportationPoint ;
+                          rdfs:range :Area .
+
+### Domain and Range Constraints for Datatype Properties ###
+
+# General
+:name                     rdfs:range xsd:string .
+:id                       rdfs:range xsd:string .
+:observationTime          rdfs:range xsd:dateTime .
+:forecastTime             rdfs:range xsd:dateTime .
+:latitude                 rdfs:domain :TransportationPoint ; rdfs:range xsd:decimal .
+:longitude                rdfs:domain :TransportationPoint ; rdfs:range xsd:decimal .
+:address                  rdfs:domain [ owl:unionOf ( :ParkingLot :ChargingStation ) ] ; rdfs:range xsd:string .
+
+# Population
+:congestionLevel          rdfs:domain [ owl:unionOf ( :PopulationStatus :PopulationForecast ) ] ; rdfs:range xsd:string .
+:congestionMessage        rdfs:domain :PopulationStatus ; rdfs:range xsd:string .
+:populationMin            rdfs:domain [ owl:unionOf ( :PopulationStatus :PopulationForecast ) ] ; rdfs:range xsd:integer .
+:populationMax            rdfs:domain [ owl:unionOf ( :PopulationStatus :PopulationForecast ) ] ; rdfs:range xsd:integer .
+:malePopulationRate       rdfs:domain :PopulationStatus ; rdfs:range xsd:decimal .
+:femalePopulationRate     rdfs:domain :PopulationStatus ; rdfs:range xsd:decimal .
+
+# Traffic
+:trafficIndex             rdfs:domain :TrafficStatus ; rdfs:range xsd:string .
+:speed                    rdfs:domain :TrafficStatus ; rdfs:range xsd:decimal .
+:distance                 rdfs:domain :RoadSection ; rdfs:range xsd:decimal .
+
+# Parking
+:capacity                 rdfs:domain :ParkingLot ; rdfs:range xsd:integer .
+:isPaid                   rdfs:domain :ParkingLot ; rdfs:range xsd:boolean .
+
+# EV Charger
+:chargerType              rdfs:domain :EVCharger ; rdfs:range xsd:string .
+:chargerStatusValue       rdfs:domain :ChargerStatus ; rdfs:range xsd:string .
+:output                   rdfs:domain :EVCharger ; rdfs:range xsd:decimal .
+:isLimitedAccess          rdfs:domain :ChargingStation ; rdfs:range xsd:boolean .
+
+# Weather
+:temperature              rdfs:domain [ owl:unionOf ( :WeatherStatus :WeatherForecast ) ] ; rdfs:range xsd:decimal .
+:humidity                 rdfs:domain :WeatherStatus ; rdfs:range xsd:decimal .
+:precipitation            rdfs:domain [ owl:unionOf ( :WeatherStatus :WeatherForecast ) ] ; rdfs:range xsd:string .
+:skyStatus                rdfs:domain :WeatherForecast ; rdfs:range xsd:string .
+
+# --- END OF FILE 03_constraints.ttl ---

@@ -1,0 +1,16 @@
+PREFIX : <http://k.fc/onto/citydata#>
+
+SELECT ?status ?statusType ?time ?level
+WHERE {
+    # 강남역 Area 찾기
+    ?area a :Area ;
+          :name "강남역"@ko ;
+          :hasStatus ?status .
+
+    # Status 타입 (예: :TrafficStatus, :PopulationStatus)
+    ?status a ?statusType .
+
+    OPTIONAL { ?status :observationTime ?time . }
+    OPTIONAL { ?status :congestionLevel ?level . }
+}
+ORDER BY ?time

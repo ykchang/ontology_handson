@@ -1,0 +1,28 @@
+PREFIX : <http://k.fc/onto/citydata#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?time ?trafficLevel ?populationMin ?populationMax ?populationLevel
+WHERE {
+    # 강남역 Area
+    ?area a :Area ;
+          :name "강남역"@ko ;
+          :hasStatus ?status .
+
+    # 공통: Status 관측 시간
+    OPTIONAL { ?status :observationTime ?time . }
+
+    # 교통 상태
+    OPTIONAL {
+        ?status a :TrafficStatus ;
+                 :congestionLevel ?trafficLevel .
+    }
+
+    # 인구 상태
+    OPTIONAL {
+        ?status a :PopulationStatus ;
+                 :populationMin ?populationMin ;
+                 :populationMax ?populationMax ;
+                 :congestionLevel ?populationLevel .
+    }
+}
+ORDER BY ?time

@@ -1,13 +1,13 @@
-#############################################
-## Chapter 1. 프롤로그 및 서울시 실시간 도시 데이터
-#############################################
-
 0. Hands On Lab 자료 github에서 복제
 
 cd /home/user/Desktop/
 git clone https://github.com/ykchang/ontology_handson.git materials
 
 // Ontology를 이해해고, 기본적인 실습을 통해 처리 흐름을 이해한다.
+
+#############################################
+## Chapter 1. 프롤로그 및 서울시 실시간 도시 데이터
+#############################################
 
 1. 데이터 준비 - Ontology에 사용할 대량 데이터
 
@@ -167,6 +167,7 @@ git clone https://github.com/ykchang/ontology_handson.git materials
     ## 서울시 도시 데이터 연계 ##
 
     # Apache Jena Fuseki : Apache Jena Framework에서 제공하는 SPARQL 서버. 시맨틱 웹에서 RDF 데이터를 HTTP를 통해 질의하고 관리할 수 있는 강력한 트리플스토어 솔루션
+    # Apache Jena는 공식 docker image가 없어서 standalone으로 설치함 (비공식 image는 존재)
     
     1) Apache Jena Fuseki 설치
     
@@ -378,7 +379,7 @@ git clone https://github.com/ykchang/ontology_handson.git materials
     (.venv) user@ontology:~/Desktop/materials/part1/01-02    
 
 
-6. BPM 이용한 프로세스 처리
+6. BPM 이용한 프로세스 처리 (대상에서 제외)
 
     FASTCAMPUS 강의에 사용한 JBoss의 jBpm이 deprecated 되었음.
     Hands On Lab에서는 제외
@@ -395,48 +396,205 @@ git clone https://github.com/ykchang/ontology_handson.git materials
 ## Chapter 2. 온톨로지 개념과 데이터 이해
 #############################################
 
-1. JSON, TTL (FOL : First Order Logic), FOL
+1. JSON, TTL , FOL (First Order Logic)
 
 - JSON : 원천 데이터
-- TTL : Ontology가 이해할 수 있는 데이터
-- FOL : 복잡한 데이터를 논리적으로 표현하는 언어
+- TTL : Ontology가 이해할 수 있는 데이터. RDF를 구현하는 표현식
+- FOL : 복잡한 데이터를 논리적으로 표현하는 언어. 주어/서술어/목적어 로 구성.
 
   JSON (Data) -> Ontology (지식) -> FOL - 논리 표현 (추론)
   
   
-2. FOL로 표현하기 : Part 2 Chapter 1. 03 서울시 공공 데이터를 FOL로 표현
+2. 서울시 실시간 데이터를 FOL로 표현하기
 
-  JSON 데이터      -> RDF/TTL       -> 온톨로지       -> FOL 규칙      -> 지식 추론
-  구조화된 원본 데이터     트리플 구조 변환      개념 구조 정의     논리 규칙 추가      의미적 질의 및 통찰
+- JSON : KEY / VALUE 표현 일 뿐, 의미적 맥락이 없어서 기계가 자동으로 판단 할 수 없다.
+- RDF/TTL : 데이터에 의미를 부여
+
+- Ontology : 무엇이 존재하는가?에 답한다. 세상에 어떤 개념들이 존재하고 그들 간의 관계는 어떠한지를 정의
+- FOL : 무엇이 사실인가?에 답한다. 정의된 개념들에 대한 구체적인 사실과 규칙을 논리적으로 표현
+
+3. 전체 여정 요약
+
+  JSON 데이터            -> RDF/TTL         -> 온톨로지       -> FOL 규칙      -> 지식 추론
+  구조화된 원본 데이터     트리플 구조 변환     개념 구조 정의     논리 규칙 추가      의미적 질의 및 통찰
+
+  "데이터는 과거를 설명하지만, 지식은 미래를 예측한다."
+
+4.  비정형 데이터 - CCTV 좌표와 영상 온토로지화, SPARQL 질의
+
+  Fuseki 서버, ollama 서버가 실행되어 있어야 함.
+
+  1) Data Road Map 
+     1단계 : CCTV 좌표 데이터 온톨로지화
+     2단계 : GeoSPARQL로 위치 기반 탐색
+     3단계 : CCTV 영상 데이터 분석
+     4단계 : 데이터 융합 및 신뢰도 검증
+
+  2) CCTV 데이터 활용
+
+    - 경찰청 도시교통정보센터 (http://www.utic.go.kr) : CCTV 정보를 JSON으로 제공함
+    - 개방데이터 -> 개방데이터 신청 메뉴에서 접근할 수 있는 KEY를 받을 수 있음
+
+    # GeoSPARQL 검증
+
+    - Fuseki UI에서 아래 SPARQL 실행 - Fuseki에서 GeoSPARQL 정상 동작하는지 확인 목적
+      (** Fuseki의 Geo 계산 방식이 완벽하지 않아 표준을 지원하지 못함)
+
+    ============================================================================
+
+    PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+    PREFIX spatialf: <http://jena.apache.org/function/spatial#>
+    PREFIX uom: <http://www.opengis.net/def/uom/OGC/1.0/>
+
+    SELECT ?distance
+    WHERE {
+      BIND("POINT(127.05 37.50)"^^geo:wktLiteral AS ?p1)
+      BIND("POINT(127.06 37.51)"^^geo:wktLiteral AS ?p2)
+      BIND(spatialf:distance(?p1, ?p2, uom:metre) AS ?distance)
+    }
+    
+    ============================================================================
+
+    -> 1419.349865379146e0 값이 출력되어야 한다.
+
+
+    # CCTV 정보 Fuseki 서버로 로딩
+
+    - TTL 파일 생성
+    cd /home/user/Desktop/materials/part2/02-01-04-cctv/cctv
+    python3 csv_to_cctv_ttl.py OpenDataCCTV.csv --o cctv.ttl
+
+    - fuseki 서버에 반영 (관리 화면 이용)
+        
+    Fuseki 관리 화면인 http://<IP ADDRESS>:3030/ 에 접속한다.
+    add data의 file upload 기능을 이용해서 생성한 ttl 파일을 반영한다.
+
+
+    - curl 명령 이용
+
+    curl -X POST -H "Content-Type: text/turtle" \
+      --data-binary @cctv.ttl \
+      "http://127.0.0.1:3030/doverenc/data?default"
+
+    -> 아래와 같이 insert 된다. 
+
+    { 
+      "count" : 79482 ,
+      "tripleCount" : 79482 ,
+      "quadCount" : 0
+    }
+    
+    - 실습 1 : 업로드한 데이터 검증 - GeoSPARQL로 데이터 조회
+
+    ============================================================================
+
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+    PREFIX spatialf: <http://jena.apache.org/function/spatial#>
+    PREFIX uom: <http://www.opengis.net/def/uom/OGC/1.0/>
+    PREFIX cctv: <http://k.doverenc/onto/cctv#>
+
+    SELECT ?cctv ?name ?wkt
+    WHERE {
+      BIND("<http://www.opengis.net/def/crs/EPSG/0/4326> POINT(127.0276 37.4979)"^^geo:wktLiteral AS ?center)
+
+      ?cctv a cctv:CCTV ;
+        rdfs:label ?name ;
+        geo:hasGeometry [ geo:asWKT ?wkt ] .  
+      FILTER(spatialf:distance(?wkt, ?center, uom:metre) < 500 )
+    }
+
+    ============================================================================
+
+    - 실습 2 : 동적 질의 (INSERT 질의 수행) 원하는 CCTV의 동영상을 볼 수 있는 URL 추가 후 질의
+
+    cd /home/user/Desktop/materials/part2/02-01-04-cctv/cctv
+    sh insert_stream.sh    
+
+    ============================================================================
+
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+    PREFIX spatialf: <http://jena.apache.org/function/spatial#>
+    PREFIX uom: <http://www.opengis.net/def/uom/OGC/1.0/>
+    PREFIX cctv: <http://k.doverenc/onto/cctv#>
+    SELECT ?cctv?name ?url
+    WHERE {
+      BIND( "<http://www.opengis.net/def/crs/EPSG/0/4326> POINT(127.0276 37.4979)"^^geo:wktLiteral AS ?center )
+      BIND( 1000 AS ?radius ) # 미터
   
-  이 부분 잘 이해하는 것이 좋겠다. 
+      ?cctv a cctv:CCTV;
+        rdfs:label?name ;
+        geo:hasGeometry[ geo:asWKT?wkt] ;
+        cctv:hasStreamUrl?url.
+
+      FILTER( spatialf:distance(?wkt, ?center, uom:metre) < ?radius )
+    }
+
+    ============================================================================
+
+  3) 향후 과제
+
+    - CCTV URL에서 STREAM 되고 있는 데이터를 캡쳐해서 비정형 정보 활용
+    - 서울시 붐빔 정보 데이터를 확인하고, CCTV 실시간 호출되고 있는 영상 데이터를 분석해서 최종 결과를 보여 준다.
+      예) 날씨가 맑고, 매우 붐비고, 교통량도 많음.
 
 
-3.  비정형 데이터 - CCTV 좌표와 영상 온토로지화, SPARQL 질의
+  4) clingo를 이용한 규칙 기반 실습 (ASP : Answer Set Programming 엔진) : https://potassco.org/clingo/
+    - 질문에 답하기 위해 매번 규칙을 적용해 답을 계산해내는, 빠르고 강력한 "추론 엔진" - 질문 있을 때마다 계산
+    - cf) Ontology : 추론의 결과나 세상의 사실들을 영구적인 구조로 저장해 놓은 지식 베이스 시스템 : 이미 있는 지식을 검색
 
-  1) CCTV 데이터 활용
+    # 심볼릭 AI를 위해 Clingo 설치 (Ubuntu 계열에서만 사용 가능. RedHat 계열에서는 다른 설치 방법 사용해야 함)
+    # ASP Solver의 대표적인 Tools/Context 이다.
+    sudo add-apt-repository ppa:potassco/stable
+    sudo apt update
+    sudo apt install clingo
 
-  http://www.utic.go.kr 
-  
-  
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX geo: <http://www.opengis.net/ont/geosparql#>
-PREFIX spatialf: <http://jena.apache.org/function/spatial#>
-PREFIX uom: <http://www.opengis.net/def/uom/OGC/1.0/>
-PREFIX cctv: <http://k.doverenc/onto/cctv#>
+    - 설치 완료 후 검증
 
-SELECT ?cctv ?name ?wkt
-WHERE {
-  BIND("<http://www.opengis.net/def/crs/EPSG/0/4326> POINT(127.0276 37.4979)"^^geo:wktLiteral AS ?center)
-  BIND(1000 AS ?radius) #미터
-  
-  ?cctv a cctv:CCTV ;
-    rdfs:label ?name ;
-    geo:hasGeometry [ geo:asWKT ?wkt ] ;
-    cctv:hasStreamUrl ?url .
+    clingo --version
 
-  FILTER(spatialf:distance(?wkt, ?center, uom:metre) < ?radius )
-}
+        user@ontology:~$ clingo --version
+        clingo version 5.8.0 (6d1efb6)
+        Address model: 64-bit
+
+        libclingo version 5.8.0
+        Configuration: with Python 3.12.3, with Lua 5.4.6
+
+        libclasp version 3.4.0 (libpotassco version 1.2.0)
+        Configuration: WITH_THREADS=1
+        Copyright (C) Benjamin Kaufmann
+
+        License: The MIT License <https://opensource.org/licenses/MIT>
+
+
+    # clingo 테스트
+
+    - fastcampus 동영상 시청 필요. 소스 코드 안나와 있음
+
+
+  5) Protege 실습 : https://protege.stanford.edu/
+
+    # Protege 설치
+    # Java Version 11 이상 설치 되어 있어야 한다. Java 25까지 지원. 가상머신에 Java 21 설치 되어 있음
+      - 설치 안되어 있을 경우 : sudo apt install openjdk-21-jdk-headless
+
+    cd /opt
+    sudo wget https://github.com/protegeproject/protege-distribution/releases/download/protege-5.6.9/Protege-5.6.9-linux.tar.gz
+    sudo tar xvzf Protege-5.6.9-linux.tar.gz
+    sudo rm Protege-5.6.9-linux.tar.gz
+    sudo chown -R user:users Protege-5.6.9
+
+    # Protege 실행 : 반드시 GUI 모드에서 실행시켜야 함. (Ubuntu Gnome Desktop)
+    cd /opt/Protege-5.6.9
+    ./run.sh
+
+    # Protege 실습 과정 : Class 생성 -> Property 정의 -> 도메인/레인지 설정
+
+    - 
+
+    # 주의 사항. 내용이 복잡하여 fastcampus 강의 동영상을 참고해야 함
+    # https://graphviz.org/download/ 을 설치하고 Protege에서 File -> Preferences -> OWLViz 에서 경로 정보를 설졍해야 할 수도 있음. (일부 오류 발생)
 
 
 #############################################
@@ -444,8 +602,23 @@ WHERE {
 #############################################
 
 
+원본 데이터의 한계 : 원본 데이터는 단절되어 있고 의미가 모호하여 복합적인 질문에 답할 수 없다
+온돌로지의 두 구성 요소 :
+- TBOX (설계) : 개념과 관계를 정의
+- ABOX (실체) : 실제 데이터 인스턴스를 TBOX에 맞게 표현
 
 
+온톨로지 모델링 프로세스
+
+1. 목표 질문 재확인 : 예) 정체 구간 근처의 충전 가능 주차장은?
+2. 데이터 탐색 및 분석 : API 문서를 보고 원본 데이터의 구조와 의미 파악
+3. 핵심 클래스 도출 : 데이터 세상의 주인광들 정의
+4. 관계 (프로퍼티) 정의 : 주인공들 사이의 관계와 속성 정의
+
+
+  1) Fuseki와 SPARQL 질의
+
+  
 
 
   2) CCTV 스트림 활용
@@ -465,7 +638,16 @@ WHERE {
   }'
   
   
-  
+
+
+
+
+
+
+
+
+
+
 #############################################
 ## Additional 1. Ubunu 설정 (24.04 기준)
 #############################################
@@ -485,7 +667,7 @@ sudo systemctl status ssh
 sudo ufw allow 22/tcp
 
 #############################################
-## Additiona2 2. Docker 설치 및 사용 (Ubuntu 24.04 기준)
+## Additional 2. Docker 설치 및 사용 (Ubuntu 24.04 기준)
 #############################################
 
 # docker 설치 https://docs.docker.com/engine/install/ubuntu/ 참조해서 진행
@@ -577,3 +759,10 @@ sudo docker system prune -af
 # - 아래 명령을 이용하면 자동 재실행이 된다.
 
 docker update --restart=always <container_id>
+
+#############################################
+## Additional 3. Apache Fuseki
+#############################################
+
+1. 모든 데이터 삭제
+

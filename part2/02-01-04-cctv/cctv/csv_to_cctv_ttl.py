@@ -5,7 +5,7 @@
 import argparse, csv, re, sys, pathlib
 
 PFX = {
-    "cctv":  "http://k.fc/onto/cctv#",
+    "cctv":  "http://k.doverenc/onto/cctv#",
     "geo":   "http://www.opengis.net/ont/geosparql#",
     "rdfs":  "http://www.w3.org/2000/01/rdf-schema#",
     "dct":   "http://purl.org/dc/terms/",
