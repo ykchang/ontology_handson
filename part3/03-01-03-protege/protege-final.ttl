@@ -1,0 +1,565 @@
+@prefix : <http://www.semanticweb.org/user/ontologies/2026/4/untitled-ontology-11/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/user/ontologies/2026/4/untitled-ontology-11/> .
+
+<http://www.semanticweb.org/user/ontologies/2026/4/untitled-ontology-11> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://k.fc/onto/citydata#hasArrivalInfo
+<http://k.fc/onto/citydata#hasArrivalInfo> rdf:type owl:ObjectProperty ;
+                                           rdfs:domain <http://k.fc/onto/citydata#SubwayStation> ;
+                                           rdfs:range <http://k.fc/onto/citydata#SubwayArrivalInfo> ;
+                                           rdfs:label "도착 정보를 가짐"@ko .
+
+
+###  http://k.fc/onto/citydata#hasBusinessCategoryStatus
+<http://k.fc/onto/citydata#hasBusinessCategoryStatus> rdf:type owl:ObjectProperty ;
+                                                      rdfs:domain <http://k.fc/onto/citydata#CommercialStatus> ;
+                                                      rdfs:range <http://k.fc/onto/citydata#BusinessCategoryStatus> ;
+                                                      rdfs:label "업종별 상태를 가짐"@ko .
+
+
+###  http://k.fc/onto/citydata#hasCharger
+<http://k.fc/onto/citydata#hasCharger> rdf:type owl:ObjectProperty .
+
+
+###  http://k.fc/onto/citydata#hasEndNode
+<http://k.fc/onto/citydata#hasEndNode> rdf:type owl:ObjectProperty ;
+                                       rdfs:domain <http://k.fc/onto/citydata#RoadSection> ;
+                                       rdfs:range <http://k.fc/onto/citydata#Node> ;
+                                       rdfs:label "종료 노드를 가짐"@ko .
+
+
+###  http://k.fc/onto/citydata#hasFacility
+<http://k.fc/onto/citydata#hasFacility> rdf:type owl:ObjectProperty ;
+                                        rdfs:domain <http://k.fc/onto/citydata#SubwayStation> ;
+                                        rdfs:range <http://k.fc/onto/citydata#Facility> ;
+                                        rdfs:label "편의시설을 가짐"@ko .
+
+
+###  http://k.fc/onto/citydata#hasForecast
+<http://k.fc/onto/citydata#hasForecast> rdf:type owl:ObjectProperty ;
+                                        rdfs:domain <http://k.fc/onto/citydata#Status> ;
+                                        rdfs:range <http://k.fc/onto/citydata#Forecast> ;
+                                        rdfs:label "예측 정보를 가짐"@ko .
+
+
+###  http://k.fc/onto/citydata#hasStartNode
+<http://k.fc/onto/citydata#hasStartNode> rdf:type owl:ObjectProperty ;
+                                         rdfs:domain <http://k.fc/onto/citydata#RoadSection> ;
+                                         rdfs:range <http://k.fc/onto/citydata#Node> ;
+                                         rdfs:label "시작 노드를 가짐"@ko .
+
+
+###  http://k.fc/onto/citydata#hasStatus
+<http://k.fc/onto/citydata#hasStatus> rdf:type owl:ObjectProperty ;
+                                      rdfs:domain <http://k.fc/onto/citydata#Area> ;
+                                      rdfs:range [ rdf:type owl:Class ;
+                                                   owl:unionOf ( <http://k.fc/onto/citydata#CommercialStatus>
+                                                                 <http://k.fc/onto/citydata#PopulationStatus>
+                                                                 <http://k.fc/onto/citydata#TrafficStatus>
+                                                                 <http://k.fc/onto/citydata#WeatherStatus>
+                                                               )
+                                                 ] .
+
+
+###  http://k.fc/onto/citydata#locatedIn
+<http://k.fc/onto/citydata#locatedIn> rdf:type owl:ObjectProperty ;
+                                      rdfs:domain <http://k.fc/onto/citydata#TransportationPoint> ;
+                                      rdfs:range <http://k.fc/onto/citydata#Area> .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://k.fc/onto/citydata#address
+<http://k.fc/onto/citydata#address> rdf:type owl:DatatypeProperty ;
+                                    rdfs:domain [ rdf:type owl:Class ;
+                                                  owl:unionOf ( <http://k.fc/onto/citydata#ChargingStation>
+                                                                <http://k.fc/onto/citydata#ParkingLot>
+                                                              )
+                                                ] ;
+                                    rdfs:range xsd:string .
+
+
+###  http://k.fc/onto/citydata#capacity
+<http://k.fc/onto/citydata#capacity> rdf:type owl:DatatypeProperty ;
+                                     rdfs:domain <http://k.fc/onto/citydata#ParkingLot> ;
+                                     rdfs:range xsd:integer .
+
+
+###  http://k.fc/onto/citydata#chargerStatusValue
+<http://k.fc/onto/citydata#chargerStatusValue> rdf:type owl:DatatypeProperty ;
+                                               rdfs:domain <http://k.fc/onto/citydata#ChargerStatus> ;
+                                               rdfs:range xsd:string .
+
+
+###  http://k.fc/onto/citydata#chargerType
+<http://k.fc/onto/citydata#chargerType> rdf:type owl:DatatypeProperty ;
+                                        rdfs:domain <http://k.fc/onto/citydata#EVCharger> ;
+                                        rdfs:range xsd:string .
+
+
+###  http://k.fc/onto/citydata#congestionLevel
+<http://k.fc/onto/citydata#congestionLevel> rdf:type owl:DatatypeProperty ;
+                                            rdfs:domain [ rdf:type owl:Class ;
+                                                          owl:unionOf ( <http://k.fc/onto/citydata#PopulationForecast>
+                                                                        <http://k.fc/onto/citydata#PopulationStatus>
+                                                                      )
+                                                        ] ;
+                                            rdfs:range xsd:string .
+
+
+###  http://k.fc/onto/citydata#congestionMessage
+<http://k.fc/onto/citydata#congestionMessage> rdf:type owl:DatatypeProperty ;
+                                              rdfs:domain <http://k.fc/onto/citydata#PopulationStatus> ;
+                                              rdfs:range xsd:string ;
+                                              rdfs:label "혼잡도 메시지"@ko .
+
+
+###  http://k.fc/onto/citydata#distance
+<http://k.fc/onto/citydata#distance> rdf:type owl:DatatypeProperty ;
+                                     rdfs:domain <http://k.fc/onto/citydata#RoadSection> ;
+                                     rdfs:range xsd:decimal .
+
+
+###  http://k.fc/onto/citydata#femalePopulationRate
+<http://k.fc/onto/citydata#femalePopulationRate> rdf:type owl:DatatypeProperty ;
+                                                 rdfs:domain <http://k.fc/onto/citydata#PopulationStatus> ;
+                                                 rdfs:range xsd:decimal ;
+                                                 rdfs:label "여성 인구 비율"@ko .
+
+
+###  http://k.fc/onto/citydata#forecastTime
+<http://k.fc/onto/citydata#forecastTime> rdf:type owl:DatatypeProperty ;
+                                         rdfs:range xsd:dateTime ;
+                                         rdfs:label "예측 시각"@ko .
+
+
+###  http://k.fc/onto/citydata#hasCharger
+<http://k.fc/onto/citydata#hasCharger> rdf:type owl:DatatypeProperty ;
+                                       rdfs:domain <http://k.fc/onto/citydata#ChargingStation> ;
+                                       rdfs:range <http://k.fc/onto/citydata#EVCharger> .
+
+
+###  http://k.fc/onto/citydata#humidity
+<http://k.fc/onto/citydata#humidity> rdf:type owl:DatatypeProperty ;
+                                     rdfs:domain <http://k.fc/onto/citydata#WeatherStatus> ;
+                                     rdfs:range xsd:decimal ;
+                                     rdfs:label "습도"@ko .
+
+
+###  http://k.fc/onto/citydata#id
+<http://k.fc/onto/citydata#id> rdf:type owl:DatatypeProperty ;
+                               rdfs:range xsd:string .
+
+
+###  http://k.fc/onto/citydata#isLimitedAccess
+<http://k.fc/onto/citydata#isLimitedAccess> rdf:type owl:DatatypeProperty ;
+                                            rdfs:domain <http://k.fc/onto/citydata#ChargingStation> ;
+                                            rdfs:range xsd:boolean .
+
+
+###  http://k.fc/onto/citydata#isPaid
+<http://k.fc/onto/citydata#isPaid> rdf:type owl:DatatypeProperty ;
+                                   rdfs:domain <http://k.fc/onto/citydata#ParkingLot> ;
+                                   rdfs:range xsd:boolean .
+
+
+###  http://k.fc/onto/citydata#latitude
+<http://k.fc/onto/citydata#latitude> rdf:type owl:DatatypeProperty ;
+                                     rdfs:domain <http://k.fc/onto/citydata#TransportationPoint> ;
+                                     rdfs:range xsd:decimal .
+
+
+###  http://k.fc/onto/citydata#longitude
+<http://k.fc/onto/citydata#longitude> rdf:type owl:DatatypeProperty ;
+                                      rdfs:domain <http://k.fc/onto/citydata#TransportationPoint> ;
+                                      rdfs:range xsd:decimal .
+
+
+###  http://k.fc/onto/citydata#malePopulationRate
+<http://k.fc/onto/citydata#malePopulationRate> rdf:type owl:DatatypeProperty ;
+                                               rdfs:domain <http://k.fc/onto/citydata#PopulationStatus> ;
+                                               rdfs:range xsd:decimal .
+
+
+###  http://k.fc/onto/citydata#name
+<http://k.fc/onto/citydata#name> rdf:type owl:DatatypeProperty ;
+                                 rdfs:range xsd:string .
+
+
+###  http://k.fc/onto/citydata#observationTime
+<http://k.fc/onto/citydata#observationTime> rdf:type owl:DatatypeProperty ;
+                                            rdfs:range xsd:dateTime .
+
+
+###  http://k.fc/onto/citydata#output
+<http://k.fc/onto/citydata#output> rdf:type owl:DatatypeProperty ;
+                                   rdfs:domain <http://k.fc/onto/citydata#EVCharger> ;
+                                   rdfs:range xsd:decimal .
+
+
+###  http://k.fc/onto/citydata#populationMax
+<http://k.fc/onto/citydata#populationMax> rdf:type owl:DatatypeProperty ;
+                                          rdfs:domain [ rdf:type owl:Class ;
+                                                        owl:unionOf ( <http://k.fc/onto/citydata#PopulationForecast>
+                                                                      <http://k.fc/onto/citydata#PopulationStatus>
+                                                                    )
+                                                      ] ;
+                                          rdfs:range xsd:integer .
+
+
+###  http://k.fc/onto/citydata#populationMin
+<http://k.fc/onto/citydata#populationMin> rdf:type owl:DatatypeProperty ;
+                                          rdfs:domain [ rdf:type owl:Class ;
+                                                        owl:unionOf ( <http://k.fc/onto/citydata#PopulationForecast>
+                                                                      <http://k.fc/onto/citydata#PopulationStatus>
+                                                                    )
+                                                      ] ;
+                                          rdfs:range xsd:integer .
+
+
+###  http://k.fc/onto/citydata#precipitation
+<http://k.fc/onto/citydata#precipitation> rdf:type owl:DatatypeProperty ;
+                                          rdfs:domain [ rdf:type owl:Class ;
+                                                        owl:unionOf ( <http://k.fc/onto/citydata#WeatherForecast>
+                                                                      <http://k.fc/onto/citydata#WeatherStatus>
+                                                                    )
+                                                      ] ;
+                                          rdfs:range xsd:string ;
+                                          rdfs:label "강수량"@ko .
+
+
+###  http://k.fc/onto/citydata#skyStatus
+<http://k.fc/onto/citydata#skyStatus> rdf:type owl:DatatypeProperty ;
+                                      rdfs:domain <http://k.fc/onto/citydata#WeatherForecast> ;
+                                      rdfs:range xsd:string ;
+                                      rdfs:label "하늘 상태"@ko .
+
+
+###  http://k.fc/onto/citydata#speed
+<http://k.fc/onto/citydata#speed> rdf:type owl:DatatypeProperty ;
+                                  rdfs:domain <http://k.fc/onto/citydata#TrafficStatus> ;
+                                  rdfs:range xsd:decimal .
+
+
+###  http://k.fc/onto/citydata#temperature
+<http://k.fc/onto/citydata#temperature> rdf:type owl:DatatypeProperty ;
+                                        rdfs:domain [ rdf:type owl:Class ;
+                                                      owl:unionOf ( <http://k.fc/onto/citydata#WeatherForecast>
+                                                                    <http://k.fc/onto/citydata#WeatherStatus>
+                                                                  )
+                                                    ] ;
+                                        rdfs:range xsd:decimal ;
+                                        rdfs:label "온도"@ko .
+
+
+###  http://k.fc/onto/citydata#trafficIndex
+<http://k.fc/onto/citydata#trafficIndex> rdf:type owl:DatatypeProperty ;
+                                         rdfs:domain <http://k.fc/onto/citydata#TrafficStatus> ;
+                                         rdfs:range xsd:string .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://k.fc/onto/citydata#Area
+<http://k.fc/onto/citydata#Area> rdf:type owl:Class ;
+                                 rdfs:label "관심 지역"@ko .
+
+
+###  http://k.fc/onto/citydata#BikeStation
+<http://k.fc/onto/citydata#BikeStation> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://k.fc/onto/citydata#TransportationPoint> ;
+                                        rdfs:label "따릉이 대여소"@ko .
+
+
+###  http://k.fc/onto/citydata#BusStop
+<http://k.fc/onto/citydata#BusStop> rdf:type owl:Class ;
+                                    rdfs:subClassOf <http://k.fc/onto/citydata#TransportationPoint> ;
+                                    rdfs:label "버스 정류장"@ko .
+
+
+###  http://k.fc/onto/citydata#BusinessCategoryStatus
+<http://k.fc/onto/citydata#BusinessCategoryStatus> rdf:type owl:Class ;
+                                                   rdfs:subClassOf <http://k.fc/onto/citydata#Status> ;
+                                                   rdfs:label "업종별 상권 상태"@ko .
+
+
+###  http://k.fc/onto/citydata#ChargerStatus
+<http://k.fc/onto/citydata#ChargerStatus> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://k.fc/onto/citydata#Status> ;
+                                          rdfs:label "충전기 상태"@ko .
+
+
+###  http://k.fc/onto/citydata#ChargingStation
+<http://k.fc/onto/citydata#ChargingStation> rdf:type owl:Class ;
+                                            rdfs:subClassOf <http://k.fc/onto/citydata#TransportationPoint> ;
+                                            rdfs:label "전기차 충전소"@ko .
+
+
+###  http://k.fc/onto/citydata#CommercialStatus
+<http://k.fc/onto/citydata#CommercialStatus> rdf:type owl:Class ;
+                                             rdfs:subClassOf <http://k.fc/onto/citydata#Status> ;
+                                             rdfs:label "상권 상태"@ko .
+
+
+###  http://k.fc/onto/citydata#EVCharger
+<http://k.fc/onto/citydata#EVCharger> rdf:type owl:Class .
+
+
+###  http://k.fc/onto/citydata#Facility
+<http://k.fc/onto/citydata#Facility> rdf:type owl:Class ;
+                                     rdfs:label "편의시설"@ko .
+
+
+###  http://k.fc/onto/citydata#Forecast
+<http://k.fc/onto/citydata#Forecast> rdf:type owl:Class ;
+                                     rdfs:label "예측 정보"@ko .
+
+
+###  http://k.fc/onto/citydata#Node
+<http://k.fc/onto/citydata#Node> rdf:type owl:Class ;
+                                 rdfs:label "노드"@ko .
+
+
+###  http://k.fc/onto/citydata#ParkingLot
+<http://k.fc/onto/citydata#ParkingLot> rdf:type owl:Class ;
+                                       rdfs:subClassOf <http://k.fc/onto/citydata#TransportationPoint> ;
+                                       rdfs:label "주차장"@ko .
+
+
+###  http://k.fc/onto/citydata#PopulationForecast
+<http://k.fc/onto/citydata#PopulationForecast> rdf:type owl:Class ;
+                                               rdfs:subClassOf <http://k.fc/onto/citydata#Forecast> ;
+                                               rdfs:label "인구 예측"@ko .
+
+
+###  http://k.fc/onto/citydata#PopulationStatus
+<http://k.fc/onto/citydata#PopulationStatus> rdf:type owl:Class ;
+                                             rdfs:subClassOf <http://k.fc/onto/citydata#Status> ;
+                                             rdfs:label "인구 상태"@ko .
+
+
+###  http://k.fc/onto/citydata#RoadSection
+<http://k.fc/onto/citydata#RoadSection> rdf:type owl:Class ;
+                                        rdfs:subClassOf <http://k.fc/onto/citydata#TransportationPoint> ;
+                                        rdfs:label "도로 구간"@ko .
+
+
+###  http://k.fc/onto/citydata#Status
+<http://k.fc/onto/citydata#Status> rdf:type owl:Class ;
+                                   rdfs:label "상태 정보"@ko .
+
+
+###  http://k.fc/onto/citydata#SubwayArrivalInfo
+<http://k.fc/onto/citydata#SubwayArrivalInfo> rdf:type owl:Class ;
+                                              rdfs:label "지하철 도착 정보"@ko .
+
+
+###  http://k.fc/onto/citydata#SubwayStation
+<http://k.fc/onto/citydata#SubwayStation> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://k.fc/onto/citydata#TransportationPoint> ;
+                                          rdfs:label "지하철역"@ko .
+
+
+###  http://k.fc/onto/citydata#TrafficStatus
+<http://k.fc/onto/citydata#TrafficStatus> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://k.fc/onto/citydata#Status> ;
+                                          rdfs:label "교통 상태"@ko .
+
+
+###  http://k.fc/onto/citydata#TransportationPoint
+<http://k.fc/onto/citydata#TransportationPoint> rdf:type owl:Class ;
+                                                rdfs:label "교통 거점"@ko .
+
+
+###  http://k.fc/onto/citydata#WeatherForecast
+<http://k.fc/onto/citydata#WeatherForecast> rdf:type owl:Class ;
+                                            rdfs:subClassOf <http://k.fc/onto/citydata#Forecast> ;
+                                            rdfs:label "날씨 예측"@ko .
+
+
+###  http://k.fc/onto/citydata#WeatherStatus
+<http://k.fc/onto/citydata#WeatherStatus> rdf:type owl:Class ;
+                                          rdfs:subClassOf <http://k.fc/onto/citydata#Status> ;
+                                          rdfs:label "날씨 상태"@ko .
+
+
+###  http://www.semanticweb.org/user/ontologies/2026/4/untitled-ontology-11#Place
+:Place rdf:type owl:Class ;
+       rdfs:comment "Place" .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://k.fc/onto/citydata/instance/ChargerStatus_HM110167_01_202510311702
+<http://k.fc/onto/citydata/instance/ChargerStatus_HM110167_01_202510311702> rdf:type owl:NamedIndividual ,
+                                                                                     <http://k.fc/onto/citydata#ChargerStatus> ;
+                                                                            <http://k.fc/onto/citydata#chargerStatusValue> "사용가능"@ko ;
+                                                                            <http://k.fc/onto/citydata#observationTime> "2025-10-31T17:02:00"^^xsd:dateTime .
+
+
+###  http://k.fc/onto/citydata/instance/ChargingStation_HM110167
+<http://k.fc/onto/citydata/instance/ChargingStation_HM110167> rdf:type owl:NamedIndividual ,
+                                                                       <http://k.fc/onto/citydata#ChargingStation> ;
+                                                              <http://k.fc/onto/citydata#hasCharger> <http://k.fc/onto/citydata/instance/EVCharger_HM110167_01> ;
+                                                              <http://k.fc/onto/citydata#id> "HM110167" ;
+                                                              <http://k.fc/onto/citydata#isLimitedAccess> "false"^^xsd:boolean ;
+                                                              <http://k.fc/onto/citydata#latitude> 37.4970487 ;
+                                                              <http://k.fc/onto/citydata#longitude> 127.0286271 ;
+                                                              <http://k.fc/onto/citydata#name> "_메리츠화재 강남사옥"@ko .
+
+
+###  http://k.fc/onto/citydata/instance/EVCharger_HM110167_01
+<http://k.fc/onto/citydata/instance/EVCharger_HM110167_01> rdf:type owl:NamedIndividual ,
+                                                                    <http://k.fc/onto/citydata#EVCharger> ;
+                                                           <http://k.fc/onto/citydata#chargerType> "AC완속"@ko ;
+                                                           <http://k.fc/onto/citydata#hasStatus> <http://k.fc/onto/citydata/instance/ChargerStatus_HM110167_01_202510311702> ;
+                                                           <http://k.fc/onto/citydata#id> "01" ;
+                                                           <http://k.fc/onto/citydata#output> 7 .
+
+
+###  http://k.fc/onto/citydata/instance/GangnamStationArea
+<http://k.fc/onto/citydata/instance/GangnamStationArea> rdf:type owl:NamedIndividual ,
+                                                                 <http://k.fc/onto/citydata#Area> ;
+                                                        <http://k.fc/onto/citydata#hasStatus> <http://k.fc/onto/citydata/instance/PopulationStatus_POI014_202511021350> ,
+                                                                                              <http://k.fc/onto/citydata/instance/TrafficStatus_POI014_202511021415> ;
+                                                        <http://k.fc/onto/citydata#id> "POI014" ;
+                                                        <http://k.fc/onto/citydata#name> "강남역"@ko .
+
+
+###  http://k.fc/onto/citydata/instance/ParkingLot_3041646
+<http://k.fc/onto/citydata/instance/ParkingLot_3041646> rdf:type owl:NamedIndividual ,
+                                                                 <http://k.fc/onto/citydata#ParkingLot> ;
+                                                        <http://k.fc/onto/citydata#address> "서초구 서초동 1330-0"@ko ;
+                                                        <http://k.fc/onto/citydata#capacity> 285 ;
+                                                        <http://k.fc/onto/citydata#id> "3041646" ;
+                                                        <http://k.fc/onto/citydata#isPaid> "true"^^xsd:boolean ;
+                                                        <http://k.fc/onto/citydata#latitude> 37.493925 ;
+                                                        <http://k.fc/onto/citydata#locatedIn> <http://k.fc/onto/citydata/instance/GangnamStationArea> ;
+                                                        <http://k.fc/onto/citydata#longitude> 127.027951 ;
+                                                        <http://k.fc/onto/citydata#name> "서초 삼성쉐르빌2 주차장"@ko .
+
+
+###  http://k.fc/onto/citydata/instance/PopulationStatus_POI014_202511021350
+<http://k.fc/onto/citydata/instance/PopulationStatus_POI014_202511021350> rdf:type owl:NamedIndividual ,
+                                                                                   <http://k.fc/onto/citydata#PopulationStatus> ;
+                                                                          <http://k.fc/onto/citydata#congestionLevel> "보통"@ko ;
+                                                                          <http://k.fc/onto/citydata#malePopulationRate> 47.6 ;
+                                                                          <http://k.fc/onto/citydata#observationTime> "2025-11-02T13:50:00"^^xsd:dateTime ;
+                                                                          <http://k.fc/onto/citydata#populationMax> 48000 ;
+                                                                          <http://k.fc/onto/citydata#populationMin> 46000 .
+
+
+###  http://k.fc/onto/citydata/instance/RoadSection_1210020001
+<http://k.fc/onto/citydata/instance/RoadSection_1210020001> rdf:type owl:NamedIndividual ,
+                                                                     <http://k.fc/onto/citydata#RoadSection> ;
+                                                            <http://k.fc/onto/citydata#distance> 320.0 ;
+                                                            <http://k.fc/onto/citydata#hasStatus> <http://k.fc/onto/citydata/instance/TrafficStatus_1210020001_202511021415> ;
+                                                            <http://k.fc/onto/citydata#id> "1210020001" ;
+                                                            <http://k.fc/onto/citydata#name> "사임당로"@ko .
+
+
+###  http://k.fc/onto/citydata/instance/TrafficStatus_1210020001_202511021415
+<http://k.fc/onto/citydata/instance/TrafficStatus_1210020001_202511021415> rdf:type owl:NamedIndividual ,
+                                                                                    <http://k.fc/onto/citydata#TrafficStatus> ;
+                                                                           <http://k.fc/onto/citydata#observationTime> "2025-11-02T14:15:00"^^xsd:dateTime ;
+                                                                           <http://k.fc/onto/citydata#speed> 14.0 ;
+                                                                           <http://k.fc/onto/citydata#trafficIndex> "정체"@ko .
+
+
+###  http://k.fc/onto/citydata/instance/TrafficStatus_POI014_202511021415
+<http://k.fc/onto/citydata/instance/TrafficStatus_POI014_202511021415> rdf:type owl:NamedIndividual ,
+                                                                                <http://k.fc/onto/citydata#TrafficStatus> ;
+                                                                       <http://k.fc/onto/citydata#observationTime> "2025-11-02T14:15:00"^^xsd:dateTime ;
+                                                                       <http://k.fc/onto/citydata#speed> 18 ;
+                                                                       <http://k.fc/onto/citydata#trafficIndex> "서행"@ko .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+<http://k.fc/onto/citydata#EVCharger> rdfs:label "전기차 충전기"@ko .
+
+
+<http://k.fc/onto/citydata#address> rdfs:label "주소"@ko .
+
+
+<http://k.fc/onto/citydata#capacity> rdfs:label "총 주차면수"@ko .
+
+
+<http://k.fc/onto/citydata#chargerStatusValue> rdfs:label "충전기 상태값"@ko .
+
+
+<http://k.fc/onto/citydata#chargerType> rdfs:label "충전기 타입"@ko .
+
+
+<http://k.fc/onto/citydata#congestionLevel> rdfs:label "혼잡도 수준"@ko .
+
+
+<http://k.fc/onto/citydata#distance> rdfs:label "거리"@ko .
+
+
+<http://k.fc/onto/citydata#hasCharger> rdfs:label "충전기를 보유함"@ko .
+
+
+<http://k.fc/onto/citydata#hasStatus> rdfs:label "상태를 가짐"@ko .
+
+
+<http://k.fc/onto/citydata#id> rdfs:label "ID"@ko .
+
+
+<http://k.fc/onto/citydata#isLimitedAccess> rdfs:label "이용제한 여부"@ko .
+
+
+<http://k.fc/onto/citydata#isPaid> rdfs:label "유료 여부"@ko .
+
+
+<http://k.fc/onto/citydata#latitude> rdfs:label "위도"@ko .
+
+
+<http://k.fc/onto/citydata#locatedIn> rdfs:label "에 위치함"@ko .
+
+
+<http://k.fc/onto/citydata#longitude> rdfs:label "경도"@ko .
+
+
+<http://k.fc/onto/citydata#malePopulationRate> rdfs:label "남성 인구 비율"@ko .
+
+
+<http://k.fc/onto/citydata#name> rdfs:label "이름"@ko .
+
+
+<http://k.fc/onto/citydata#observationTime> rdfs:label "관측 시각"@ko .
+
+
+<http://k.fc/onto/citydata#output> rdfs:label "충전기 출력"@ko .
+
+
+<http://k.fc/onto/citydata#populationMax> rdfs:label "최대 인구수"@ko .
+
+
+<http://k.fc/onto/citydata#populationMin> rdfs:label "최소 인구수"@ko .
+
+
+<http://k.fc/onto/citydata#speed> rdfs:label "속도"@ko .
+
+
+<http://k.fc/onto/citydata#trafficIndex> rdfs:label "교통 지수"@ko .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi

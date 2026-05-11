@@ -1,0 +1,14 @@
+[
+  [
+    "name" : "HttpSparqlTask", 
+    "parameters" : [ 
+        "Query" : new StringDataType()
+    ], 
+    "results" : [ 
+        "Result" : new ObjectDataType() 
+    ], 
+    "displayName" : "Fuseki Query",
+    "category" : "Service Tasks",
+    "description" : "Execute SPARQL Query"
+  ]
+]

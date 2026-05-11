@@ -1,0 +1,17 @@
+{
+  "original_question": "오후 8시, 강남역 근처에서 대기 없이 전기차 충전을 할 수 있고, 혼잡하지 않은 곳을 찾고 싶습니다.",
+  "intent": "ev_charger_recommendation",
+  "area": {
+    "name": "강남역",
+    "area_code": "POI014"
+  },
+  "time": {
+    "time_of_day": "20:00",
+    "iso_datetime": null
+  },
+  "constraints": {
+    "need_ev_charger": true,
+    "min_available": 1,
+    "max_busy_ratio": 0.5
+  }
+}

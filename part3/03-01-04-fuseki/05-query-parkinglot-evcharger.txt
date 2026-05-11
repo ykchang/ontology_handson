@@ -1,4 +1,4 @@
-PREFIX : <http://k.fc/onto/citydata#>
+PREFIX : <http://k.doverenc/onto/citydata#>
 
 SELECT ?parking ?parkingId ?charger ?chargerId
 WHERE {

@@ -1,5 +1,5 @@
-@prefix :      <http://k.fc/onto/citydata#> .
-@prefix inst:  <http://k.fc/onto/citydata/instance/> .
+@prefix :      <http://k.doverenc/onto/citydata#> .
+@prefix inst:  <http://k.doverenc/onto/citydata/instance/> .
 @prefix geo:   <http://www.opengis.net/ont/geosparql#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 

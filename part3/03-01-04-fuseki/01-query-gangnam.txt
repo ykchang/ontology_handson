@@ -1,6 +1,6 @@
 # 강남역 Area 찾기
 
-PREFIX : <http://k.fc/onto/citydata#>
+PREFIX : <http://k.doverenc/onto/citydata#>
 
 SELECT ?area
 WHERE {

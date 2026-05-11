@@ -1,4 +1,4 @@
-PREFIX : <http://k.fc/onto/citydata#>
+PREFIX : <http://k.doverenc/onto/citydata#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 SELECT ?time ?trafficLevel ?populationMin ?populationMax ?populationLevel

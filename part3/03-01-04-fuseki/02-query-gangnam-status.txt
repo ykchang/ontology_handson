@@ -1,4 +1,4 @@
-PREFIX : <http://k.fc/onto/citydata#>
+PREFIX : <http://k.doverenc/onto/citydata#>
 
 SELECT ?status ?statusType ?time ?level
 WHERE {

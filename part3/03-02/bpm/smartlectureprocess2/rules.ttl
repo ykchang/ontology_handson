@@ -1,0 +1,109 @@
+@prefix ex: <http://k.fc/onto/city#> .
+
+# ============================================================
+# [Rule Group 1: 30분 지연 (PT30M)]
+# 조건: 강남역(POI014) 인구가 '붐빔' 계열이거나, 도로가 '정체'일 때
+# 결과: ex:LectureContext 객체에 ex:hasDelayTime "PT30M" 부여
+# ============================================================
+
+[Busy_Pop_High: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "붐빔") 
+    -> (ex:LectureContext ex:hasDelayTime "PT30M")]
+
+[Busy_Pop_Mid: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "약간 붐빔") 
+    -> (ex:LectureContext ex:hasDelayTime "PT30M")]
+
+[Busy_Road: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasRoadTrafficSummary ?road), (?road ex:roadTrafficIndex "정체") 
+    -> (ex:LectureContext ex:hasDelayTime "PT30M")]
+
+
+# ============================================================
+# [Rule Group 2: 정상 운행 (PT0M)]
+# 조건: 강남역(POI014)이 여유/보통이고, 도로가 원활/서행일 때
+# ============================================================
+
+[Normal_Pop_Low: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "여유") 
+    -> (ex:LectureContext ex:hasDelayTime "PT0M")]
+
+[Normal_Pop_Normal: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "보통") 
+    -> (ex:LectureContext ex:hasDelayTime "PT0M")]
+
+[Normal_Road_Good: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasRoadTrafficSummary ?road), (?road ex:roadTrafficIndex "원활") 
+    -> (ex:LectureContext ex:hasDelayTime "PT0M")]
+
+[Normal_Road_Slow: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasRoadTrafficSummary ?road), (?road ex:roadTrafficIndex "서행") 
+    -> (ex:LectureContext ex:hasDelayTime "PT0M")]
+
+
+# ============================================================
+# [Rule Group A: 혼잡/활발 상황 -> 인구 분산을 위해 반경 확대 (1500m)]
+# 조건 1: 인구가 '붐빔' 계열일 때
+# 조건 2: 도로가 '정체'일 때
+# 조건 3: 상권이 '활발'할 때
+# ============================================================
+
+[Coupon_Busy_Pop1: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "붐빔") 
+    -> (ex:LectureContext ex:hasDecisionRadius "1500")]
+
+[Coupon_Busy_Pop2: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "약간 붐빔") 
+    -> (ex:LectureContext ex:hasDecisionRadius "1500")]
+
+[Coupon_Busy_Road: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasRoadTrafficSummary ?road), (?road ex:roadTrafficIndex "정체") 
+    -> (ex:LectureContext ex:hasDecisionRadius "1500")]
+
+[Coupon_Busy_Comm: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasCommercialStatus ?comm), (?comm ex:area_cmrcl_lvl "활발") 
+    -> (ex:LectureContext ex:hasDecisionRadius "1500")]
+
+
+# ============================================================
+# [Rule Group B: 여유/한산 상황 -> 밀집 유도를 위해 반경 축소 (200m)]
+# 조건 1: 인구가 '여유'/'보통'일 때
+# 조건 2: 도로가 '원활'/'서행'일 때
+# 조건 3: 상권이 '한산한' 경우
+# ============================================================
+
+[Coupon_Relax_Pop1: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "여유") 
+    -> (ex:LectureContext ex:hasDecisionRadius "200")]
+
+[Coupon_Relax_Pop2: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasPopulationStatus ?pop), (?pop ex:congestionLevel "보통") 
+    -> (ex:LectureContext ex:hasDecisionRadius "200")]
+
+[Coupon_Relax_Road1: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasRoadTrafficSummary ?road), (?road ex:roadTrafficIndex "원활") 
+    -> (ex:LectureContext ex:hasDecisionRadius "200")]
+
+[Coupon_Relax_Road2: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasRoadTrafficSummary ?road), (?road ex:roadTrafficIndex "서행") 
+    -> (ex:LectureContext ex:hasDecisionRadius "200")]
+
+[Coupon_Relax_Comm: 
+    (?area ex:areaCode "POI014"), 
+    (?area ex:hasCommercialStatus ?comm), (?comm ex:area_cmrcl_lvl "한산한") 
+    -> (ex:LectureContext ex:hasDecisionRadius "200")]

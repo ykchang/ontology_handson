@@ -1,0 +1,26 @@
+@prefix : <http://k.fc/onto/smart-lecture#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ------------------------------------------------------------------
+# [Rule 1] 교통 체증 심각 (Heavy Traffic)
+# 조건: 혼잡도(CongestionLevel)가 80을 초과하면
+# 결론: 지연 시간(DelayTime)은 30분("PT30M")으로 설정한다.
+# ------------------------------------------------------------------
+[HeavyTraffic: 
+    (?loc :hasCongestionLevel ?level), 
+    greaterThan(?level, 80) 
+    -> 
+    (?loc :hasDelayTime "PT30M")
+]
+
+# ------------------------------------------------------------------
+# [Rule 2] 교통 원활 (Normal Traffic)
+# 조건: 혼잡도(CongestionLevel)가 80 이하이면
+# 결론: 지연 시간(DelayTime)은 0분("PT0M")으로 설정한다.
+# ------------------------------------------------------------------
+[NormalTraffic: 
+    (?loc :hasCongestionLevel ?level), 
+    le(?level, 80) 
+    -> 
+    (?loc :hasDelayTime "PT0M")
+]

@@ -1,0 +1,3 @@
+PREFIX : <http://k.fc/onto/smart-lecture#>
+
+:GangnamStation :hasCongestionLevel 85 .
