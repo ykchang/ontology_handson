@@ -7,7 +7,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 
 # 설정
-FUSEKI_SPARQL_ENDPOINT = "http://localhost:3030/fc/sparql"
+FUSEKI_SPARQL_ENDPOINT = "http://localhost:3030/doverenc/sparql"
 OLLAMA_MODEL_NAME = "qwen3:8b"
 
 def get_llm(temperature: float = 0.0) -> ChatOllama:
@@ -36,7 +36,7 @@ def extract_area_name_and_now_flag(question: str) -> Tuple[str, bool]:
     return region, as_of_now
 
 def query_status_for_area(area_name: str, recent_only: bool = False) -> dict:
-    ns = "http://k.fc/onto/citydata#"
+    ns = "http://k.doverenc/onto/citydata#"
 
     # 최근성 필터: NOW() 사용 가능 여부에 따라 구성
     time_filter = ""
@@ -89,6 +89,12 @@ WHERE {{
 ORDER BY DESC(?time)
 LIMIT 1
 """
+
+    # 디버깅용 쿼리 출력
+    print("traffic_query -> ")
+    print(traffic_query)
+    print("population_query -> ")
+    print(population_query)
 
     def run_sparql(q: str) -> dict:
         resp = requests.get(

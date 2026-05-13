@@ -18,7 +18,8 @@ import ollama  # pip install ollama
 
 
 # Ollama에서 사용하는 qwen2.5b 모델 이름 (로컬 환경에 맞게 수정 가능)
-QWEN_MODEL_NAME = "qwen2.5:3b"  # 예시: qwen2.5 3B; 실제 설치된 이름으로 변경하세요.
+#QWEN_MODEL_NAME = "qwen2.5:3b"  # 예시: qwen2.5 3B; 실제 설치된 이름으로 변경하세요.
+QWEN_MODEL_NAME = "qwen3"  # 예시: qwen3 latest로 변경
 
 
 # 온톨로지/도메인에 맞춘 질문 해석 결과 스키마 -------------------------------
