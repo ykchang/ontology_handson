@@ -376,10 +376,12 @@ git clone https://github.com/ykchang/ontology_handson.git materials
     작업유형(list_by_level)에 대해 강남역의 혼잡도 단계(boombeon) 데이터를 조회하려 했으나, 결과값이 존재하지 않음.  
     - 혼잡도 단계 'boombeon'이 잘못된 값이거나, 해당 위치/단계에 대한 데이터가 없음.  
     - 시간범위 지정 없이 조회했으나, 결과가 비어 있음.
-    (.venv) user@ontology:~/Desktop/materials/part1/01-02    
+    (.venv) user@ontology:~/Desktop/materials/part1/01-02
 
    -> 자연어 질의를 LLM을 이용해서 인식하고 이를 Fuseki에 SPARQL 형태로 조회해서 결과를 가져온 후 다시 LLM을 이용해 응답용 자연어를 만들어냄
    -> 이 Handson Lab의 궁극적으로 구축해야 할 모습임.
+   
+   ** Fastcampus 예제 정상 동작하지 않음. 수정 하지 않고 skip 함
 
 
 6. BPM 이용한 프로세스 처리 (대상에서 제외)
@@ -731,12 +733,18 @@ Protege 이용해서 계속 모델링.
         drwxrwxr-x 2 user user 4096 May 11 03:47 Data-0001/
         -rw-rw-r-- 1 user user    6 May 11 03:47 tdb.lock
 
-    - fuseki 서버에 protege에서 모델링한 4개의 ttl 파일을 반영
+    - fuseki 서버에 protege에서 모델링한 5개의 ttl 파일을 반영
 
     fuseki 서버 화면에 접속
     http://localhost:3030
 
     Add Data를 이용해서 4개의 파일과 fixed의 1개 파일을 업로드한다.
+
+    /home/user/Desktop/materials/part3/03-01-03-protege/01-classes.ttl
+    /home/user/Desktop/materials/part3/03-01-03-protege/02-properties_hierarchy.ttl
+    /home/user/Desktop/materials/part3/03-01-03-protege/03-constraints.ttl
+    /home/user/Desktop/materials/part3/03-01-03-protege/04-abox.ttl
+    /home/user/Desktop/materials/part3/03-01-03-protege/fixed/01-fix-locatedin.ttl
 
     4) 데이터 조회
 
@@ -902,6 +910,27 @@ Protege 이용해서 계속 모델링.
 #############################################
 ## BPM의 동적 정의와 온톨로지
 #############################################
+
+1. 동적 BPM의 필요성 (vs 정적 BPM)
+
+- 정해진 시간에 정해진 대로만 동작하는 시스템은 더 이상 유효지 않다 -> 동적 BPM의 필요성 대두
+- 상황에 반응하는 프로세스 : 데이터와 상태를 기반으로 실행 시점에 최적의 경로를 스스로 결정하는 방식
+
+-> 데이터 판단 책임을 Ontology에 위임하여 동적 프로세스 처리
+
+2. jbpm 구동
+
+앞서 설치한 docker image 활용
+
+http://localhost:8080/business-central 에 접속
+wbadmin / wbadmin 으로 로그인
+
+Design -> project -> MySpace 메뉴 들어감. Add Project 버튼 클릭
+
+Gangnam324
+
+
+
 
 
 

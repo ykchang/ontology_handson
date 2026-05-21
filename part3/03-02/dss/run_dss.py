@@ -92,7 +92,7 @@ def build_ev_charger_sparql(interp: QueryInterpretation) -> str:
         busy_filter = f"  FILTER(?busyRatio <= {max_busy_ratio})\n"
 
     query = f"""
-PREFIX ex:  <http://k.fc/onto/city#>
+PREFIX ex:  <http://k.doverenc/onto/city#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 

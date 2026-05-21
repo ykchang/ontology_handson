@@ -26,7 +26,7 @@ from rdflib.namespace import RDF, RDFS, XSD
 # 네임스페이스 정의
 # ------------------------------
 
-EX = Namespace("http://k.fc/onto/city#")
+EX = Namespace("http://k.doverenc/onto/city#")
 GEO = Namespace("http://www.opengis.net/ont/geosparql#")
 WKT_DATATYPE = GEO.wktLiteral
 
